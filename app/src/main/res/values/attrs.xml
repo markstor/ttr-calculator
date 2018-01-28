@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="MapView">
+        <attr name="showText" format="boolean" />
+        <attr name="mapVersion" format="enum">
+            <enum name="europe" value="0" />
+            <enum name="america" value="1" />
+        </attr>
+    </declare-styleable>
+</resources>

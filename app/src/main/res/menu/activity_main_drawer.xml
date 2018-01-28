@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/players"
+            android:icon="@drawable/ic_menu_camera"
+            android:title="Players" />
+        <item
+            android:id="@+id/map"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="Map" />
+        <item
+            android:id="@+id/cards"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="Route Cards" />
+        <item
+            android:id="@+id/scoreboard"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="Scoreboard" />
+    </group>
+
+    <group android:checkableBehavior="single">
+        <menu>
+            <item
+                android:id="@+id/settings"
+                android:icon="@drawable/ic_menu_share"
+                android:title="Settings" />
+            <item
+                android:id="@+id/about"
+                android:icon="@drawable/ic_menu_send"
+                android:title="About" />
+        </menu>
+    </group>
+
+</menu>

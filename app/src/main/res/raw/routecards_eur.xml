@@ -1,0 +1,10 @@
+<routecards>
+    <card
+        from="Madrid"
+        points="10"
+        to="Petrograd" />
+    <card
+        from="Paris"
+        points="7"
+        to="Petrograd" />
+</routecards>
