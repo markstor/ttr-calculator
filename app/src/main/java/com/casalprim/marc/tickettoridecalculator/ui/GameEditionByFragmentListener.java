@@ -24,4 +24,6 @@ public interface GameEditionByFragmentListener {
 
     void onTrainRemoved(Player.PlayerColor color, Edge edge);
 
+    void onMapFragmentClick();
+
 }

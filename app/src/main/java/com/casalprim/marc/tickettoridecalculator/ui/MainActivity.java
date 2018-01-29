@@ -1,7 +1,6 @@
 package com.casalprim.marc.tickettoridecalculator.ui;
 
 import android.content.res.Configuration;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -25,26 +24,41 @@ import com.casalprim.marc.tickettoridecalculator.ui.fragments.NoPlayersFragment;
 import com.casalprim.marc.tickettoridecalculator.ui.fragments.PlayersFragment;
 import com.casalprim.marc.tickettoridecalculator.ui.fragments.ScoreBoardFragment;
 
+import java.io.InputStream;
+
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, GameEditionByFragmentListener {
-    public static Resources RESOURCES;
+    private static String ARG_GAME = "game";
+    private static String ARG_MENU_ITEM_POSITION = "menuItemPosition";
     private Game game;
+    private int menuItemSelectedPosition;
     private ActionBarDrawerToggle mDrawerToggle;
     private DrawerLayout mDrawerLayout;
+    private NavigationView navigationView;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        // Set a Toolbar to replace the ActionBar.
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        RESOURCES = getResources();
-        game = new Game();
 
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (savedInstanceState != null) {
+            // Restore value of members from saved state
+            game = (Game) savedInstanceState.getSerializable(ARG_GAME);
+            menuItemSelectedPosition = savedInstanceState.getInt(ARG_MENU_ITEM_POSITION);
+        } else {
+            // Initialize members with default values for a new instance
+            initGame();
+            menuItemSelectedPosition = 0;
+        }
+
+        // Set a Toolbar to replace the ActionBar.
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+
+        mDrawerLayout = findViewById(R.id.drawer_layout);
 
         mDrawerToggle = new ActionBarDrawerToggle(
                 this,                 /* host Activity */
@@ -57,11 +71,11 @@ public class MainActivity extends AppCompatActivity
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        //select Players option in navigation drawer
-        onNavigationItemSelected(navigationView.getMenu().getItem(0));
+        //select option in navigation drawer
+        onNavigationItemSelected(navigationView.getMenu().getItem(menuItemSelectedPosition));
 
 
     }
@@ -101,12 +115,24 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onMapFragmentClick() {
+        onNavigationItemSelected(navigationView.getMenu().findItem(R.id.map));
+    }
+
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem menuItem) {
         // Handle navigation view item clicks here.
 
         Fragment fragment = null;
+        for (int i = 0; i < navigationView.getMenu().size(); i++) {
+            if (navigationView.getMenu().getItem(i).equals(menuItem)) {
+                menuItemSelectedPosition = i;
+                break;
+            }
+        }
+
         switch (menuItem.getItemId()) {
             case R.id.players:
                 fragment = PlayersFragment.newInstance(this.game.getPlayers());
@@ -149,6 +175,26 @@ public class MainActivity extends AppCompatActivity
     public void onPlayerAdded(Player.PlayerColor color) {
         if (!game.getPlayers().containsKey(color)) { //if player not in the game
             game.addNewPlayer(color);
+            Player player = game.getPlayers().get(color);
+            String name = "";
+            switch (player.getColor()) {
+                case BLUE:
+                    name = getString(R.string.blue_player_name);
+                    break;
+                case RED:
+                    name = getString(R.string.red_player_name);
+                    break;
+                case GREEN:
+                    name = getString(R.string.green_player_name);
+                    break;
+                case YELLOW:
+                    name = getString(R.string.yellow_player_name);
+                    break;
+                case BLACK:
+                    name = getString(R.string.black_player_name);
+                    break;
+            }
+            player.setName(name);
         }
     }
 
@@ -158,9 +204,22 @@ public class MainActivity extends AppCompatActivity
             game.removePlayer(color);
         }
         if (game.getPlayers().isEmpty()) {
-            game = new Game();
+            initGame();
             Toast.makeText(this, "Game reset", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void initGame() {
+        InputStream mapInputStream = getResources().openRawResource(R.raw.map_eur);
+        InputStream cardsInputStream = getResources().openRawResource(R.raw.routecards_eur);
+        game = new Game(mapInputStream, cardsInputStream);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putSerializable(ARG_GAME, this.game);
+        outState.putInt(ARG_MENU_ITEM_POSITION, this.menuItemSelectedPosition);
+        super.onSaveInstanceState(outState);
     }
 
     @Override

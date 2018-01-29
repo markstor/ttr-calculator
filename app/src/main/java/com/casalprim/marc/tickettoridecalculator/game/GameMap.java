@@ -5,9 +5,6 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 import android.util.Xml;
 
-import com.casalprim.marc.tickettoridecalculator.R;
-import com.casalprim.marc.tickettoridecalculator.ui.MainActivity;
-
 import org.xmlpull.v1.XmlPullParser;
 
 import java.io.IOException;
@@ -23,18 +20,17 @@ public class GameMap implements Serializable {
     private ArrayList<City> cities;
     private ArrayList<Edge> edges;
 
-    public GameMap() {
-        this.cities = parseMap();
+    public GameMap(InputStream file) {
+        this.cities = parseMap(file);
         this.edges = retrieveEdges();
     }
 
-    public ArrayList<City> parseMap() {
+    public ArrayList<City> parseMap(InputStream stream) {
         ArrayList<City> list = new ArrayList<>();
         XmlPullParser parser = Xml.newPullParser();
-        InputStream stream = null;
         try {
             // auto-detect the encoding from the stream
-            stream = MainActivity.RESOURCES.openRawResource(R.raw.map_eur);
+            //stream = MainActivity.RESOURCES.openRawResource(R.raw.map_eur);
             parser.setInput(stream, null);
             int eventType = parser.getEventType();
             boolean done = false;
@@ -47,12 +43,12 @@ public class GameMap implements Serializable {
                     case XmlPullParser.START_TAG:
                         name = parser.getName();
                         if (name.equalsIgnoreCase("city")) {
-                            Log.i("New city", "Create new item");
+                            //Log.i("New city", "Create new item");
                             item = new City();
                             for (int i = 0; i < parser.getAttributeCount(); i++) {
                                 String attrName = parser.getAttributeName(i);
                                 String value = parser.getAttributeValue(i);
-                                Log.i("Attribute", attrName + ": " + value);
+                                //Log.i("Attribute", attrName + ": " + value);
                                 switch (attrName) {
                                     case "name":
                                         item.setName(value);
@@ -72,13 +68,13 @@ public class GameMap implements Serializable {
                             String weight = parser.getAttributeValue(null, "length");
                             String color = parser.getAttributeValue(null, "color");
                             String color2 = parser.getAttributeValue(null, "color2");
-                            Log.i("New edge", "From " + city1 + ", To: " + city2 + ", Weight: " + weight + ", Color: " + color);
+                            //Log.i("New edge", "From " + city1 + ", To: " + city2 + ", Weight: " + weight + ", Color: " + color);
                             this.addEdge(list, city1, city2, weight, color, color2);
                         }
                         break;
                     case XmlPullParser.END_TAG:
                         name = parser.getName();
-                        Log.i("End tag", name);
+                        //Log.i("End tag", name);
                         if (name.equalsIgnoreCase("map")) {
                             done = true;
                         }

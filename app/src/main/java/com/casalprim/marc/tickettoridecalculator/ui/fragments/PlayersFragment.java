@@ -3,6 +3,7 @@ package com.casalprim.marc.tickettoridecalculator.ui.fragments;
 import android.content.Context;
 import android.graphics.drawable.StateListDrawable;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.util.StateSet;
 import android.view.LayoutInflater;
@@ -93,6 +94,16 @@ public class PlayersFragment extends Fragment {
         super.onStart();
         setPlayerSelectors();
         updateButtons(playersInGame);
+        FloatingActionButton floatingButton = getView().findViewById(R.id.next_map_button);
+        floatingButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mListener != null) {
+                    mListener.onMapFragmentClick();
+                }
+            }
+        });
+
     }
 
     @Override
@@ -140,7 +151,7 @@ public class PlayersFragment extends Fragment {
     public void updateButtons(HashMap<Player.PlayerColor, Player> playersInGame) {
         //Select players that are in the game
         for (int buttonId : BUTTON_ID_TO_PLAYER_COLOR_MAP.keySet()) {
-            ToggleButton button = (ToggleButton) getView().findViewById(buttonId);
+            ToggleButton button = getView().findViewById(buttonId);
             if (playersInGame.containsKey(BUTTON_ID_TO_PLAYER_COLOR_MAP.get(buttonId)))
                 button.setChecked(true);
             else

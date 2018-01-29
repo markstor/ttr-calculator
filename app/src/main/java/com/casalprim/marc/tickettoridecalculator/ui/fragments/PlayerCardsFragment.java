@@ -79,10 +79,10 @@ public class PlayerCardsFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_playercards, container, false);
 
-        assigningLabel = (TextView) view.findViewById(R.id.playerLabel);
-        assigningLabel.setText("Assign ticket from");
-        citiesGridview = (GridView) view.findViewById(R.id.unassignedCardsGridView);
-        cardsGridview = (GridView) view.findViewById(R.id.assignedCardsGridView);
+        assigningLabel = view.findViewById(R.id.playerLabel);
+        assigningLabel.setText(R.string.assign_ticket_from);
+        citiesGridview = view.findViewById(R.id.unassignedCardsGridView);
+        cardsGridview = view.findViewById(R.id.assignedCardsGridView);
         citiesAdapter = new CitiesAdapter(this.getContext(), getUnassignedCities(routeCards));
         citiesAdapter.setBackgroundTextColor(Game.PLAYER_COLOR_MAP.get(player.getColor()));
         citiesAdapter.setTextColor(Game.PLAYER_TEXT_COLOR_MAP.get(player.getColor()));
@@ -117,7 +117,7 @@ public class PlayerCardsFragment extends Fragment {
             }
         });
 
-        cancelFromCity = (Button) view.findViewById(R.id.cancelButton);
+        cancelFromCity = view.findViewById(R.id.cancelButton);
         cancelFromCity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -125,8 +125,8 @@ public class PlayerCardsFragment extends Fragment {
             }
         });
 
-        TextView bottomLabel = (TextView) view.findViewById(R.id.assigned_cards_text);
-        bottomLabel.setText("Assigned cards for player " + player.getName());
+        TextView bottomLabel = view.findViewById(R.id.assigned_cards_text);
+        bottomLabel.setText(getString(R.string.assigned_cards, player.getName()));
 
         return view;
     }
@@ -184,10 +184,10 @@ public class PlayerCardsFragment extends Fragment {
         if (waiting) {
             citiesAdapter.setCities(getUnassignedCities(routeCards));
             cancelFromCity.setVisibility(View.INVISIBLE);
-            assigningLabel.setText("Assign ticket from");
+            assigningLabel.setText(R.string.assign_ticket_from);
             citiesGridview.setOnItemClickListener(cityClickListener);
         } else {
-            assigningLabel.setText("Assign ticket from " + fromCity + " to");
+            assigningLabel.setText(getString(R.string.assign_ticket_from_to, fromCity));
             citiesAdapter.setCities(getDestinations(routeCards, fromCity));
             citiesGridview.setOnItemClickListener(destinationClickListener);
             cancelFromCity.setVisibility(View.VISIBLE);

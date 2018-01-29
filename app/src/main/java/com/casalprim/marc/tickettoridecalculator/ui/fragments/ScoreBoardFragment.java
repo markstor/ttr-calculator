@@ -179,7 +179,7 @@ public class ScoreBoardFragment extends Fragment {
             if (card.isCompleted())
                 score = card.getPoints();
             else
-                score = card.getPoints();
+                score = -card.getPoints();
             addNewRowIndented(scoreTable, card.getFrom() + "-" + card.getTo(), score, bgLtColor, txtColor);
         }
     }

@@ -113,7 +113,7 @@ public class Player implements Serializable {
     }
 
     public int getRemainingTrains() {
-        return this.TOTAL_NUMBER_OF_TRAINS - trains.getNumberOfTrains();
+        return TOTAL_NUMBER_OF_TRAINS - trains.getNumberOfTrains();
     }
 
     public TrainMap getTrainMap() {
@@ -159,10 +159,10 @@ public class Player implements Serializable {
             card.setCompleted(false);
             card.setOwned(false);
         }
-        for (Edge track = this.trains.getDeployedTrains()) {
-            this.trains.removeTrain(track);
+        for (Edge track : this.trains.getDeployedTrains()) {
             track.removeOccupant(this);
         }
+        this.trains = new TrainMap();
     }
 
     public void removeTrain(Edge edge) {

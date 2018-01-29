@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#6A6350</color>
+    <color name="colorPrimary">#6a6350</color>
     <color name="colorPrimaryDark">#4B3D16</color>
-    <color name="colorAccent">#36477B</color>
+    <color name="colorAccent">#36477b</color>
     <!--    <color name="playerGreen">#2B7844</color>
         <color name="playerRed">#A01208</color>
         <color name="playerYellow">#FFD943</color>

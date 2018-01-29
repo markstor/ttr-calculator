@@ -25,54 +25,59 @@
 
         <LinearLayout
             android:id="@+id/playerSelectorLayout"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="0dp"
-            android:gravity="center_horizontal"
-            android:orientation="vertical">
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
             <ToggleButton
                 android:id="@+id/bluePlayerSelector"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:layout_weight="1"
+                android:shadowColor="@android:color/holo_blue_dark"
                 android:textOff=""
                 android:textOn="" />
 
             <ToggleButton
                 android:id="@+id/redPlayerSelector"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:layout_weight="1"
+                android:shadowColor="@android:color/holo_red_dark"
                 android:textOff=""
                 android:textOn="" />
 
             <ToggleButton
                 android:id="@+id/greenPlayerSelector"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:layout_weight="1"
+                android:shadowColor="@android:color/holo_green_dark"
                 android:textOff=""
                 android:textOn="" />
 
             <ToggleButton
                 android:id="@+id/yellowPlayerSelector"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:layout_weight="1"
+                android:shadowColor="#FFD800"
                 android:textOff=""
                 android:textOn="" />
 
             <ToggleButton
                 android:id="@+id/blackPlayerSelector"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:layout_weight="1"
+                android:shadowColor="@android:color/black"
                 android:textOff=""
                 android:textOn="" />
 

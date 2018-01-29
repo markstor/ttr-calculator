@@ -72,9 +72,9 @@ public class CardsAdapter extends BaseAdapter {
         }
         RouteCard card = cards.get(i);
         if (card.isCompleted()) {
-            ll.setBackgroundColor(Color.argb(200, 20, 230, 20));
+            ll.setBackgroundColor(Color.argb(100, 20, 230, 20));
         } else {
-            ll.setBackgroundColor(Color.argb(200, 230, 20, 20));
+            ll.setBackgroundColor(Color.argb(100, 230, 20, 20));
         }
 
 

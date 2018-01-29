@@ -1,8 +1,11 @@
 package com.casalprim.marc.tickettoridecalculator.ui;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.PointF;
 import android.graphics.Rect;
@@ -13,6 +16,7 @@ import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
 
+import com.casalprim.marc.tickettoridecalculator.R;
 import com.casalprim.marc.tickettoridecalculator.game.City;
 import com.casalprim.marc.tickettoridecalculator.game.Edge;
 import com.casalprim.marc.tickettoridecalculator.game.GameMap;
@@ -32,7 +36,7 @@ public class MapView extends View {
     private Player.PlayerColor selectedColor;
     private OnEdgeSelectedListener mListener;
     private City selectedCity;
-    private Rect r;
+    private Rect r, backgroundRect;
     private Paint mCityNamePaint, mEdgesPaint, mCityCirclePaint, mSelectionStrokePaint;
     private int spRadiusSize;
     private GameMap gameMap;
@@ -49,6 +53,7 @@ public class MapView extends View {
     private int mCityCircleColor, mCityHighlightedColor, mSelectionStrokeColor;
     private int mCityNameColor;
     private int mCityHighlightedNameColor;
+    private Bitmap bgimage;
 
     public MapView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -58,6 +63,7 @@ public class MapView extends View {
 
     private void init() {
         r = new Rect();
+        bgimage = BitmapFactory.decodeResource(getResources(), R.drawable.map_bg);
         selectedCity = null;
         selectedColor = null;
         mListener = null;
@@ -127,9 +133,24 @@ public class MapView extends View {
         xpad = (float) (getPaddingLeft() + getPaddingRight());
         ypad = (float) (getPaddingTop() + getPaddingBottom());
         //this.radiusCities=0.03f*w;
-        drawableWidth = (float) w - xpad - 2.2f * radiusCities;
-        drawableHeight = (float) h - ypad - 2.2f * radiusCities;
+        drawableWidth = (float) w - xpad - 1.5f * radiusCities;
+        drawableHeight = (float) h - ypad - 1.5f * radiusCities;
         rotateCityCoordinates = (drawableWidth < drawableHeight);
+        bgimage = BitmapFactory.decodeResource(getResources(), R.drawable.map_bg);
+        int bitmapScale = 3; //why???!?!?!
+        if (rotateCityCoordinates) {
+            PointF lt = transformCoordinates(new PointF(0, bgimage.getHeight() / bitmapScale));
+            PointF rb = transformCoordinates(new PointF(bgimage.getWidth() / bitmapScale, 0));
+            backgroundRect = new Rect((int) lt.x, (int) lt.y, (int) rb.x, (int) rb.y);
+
+            Matrix matrix = new Matrix();
+            matrix.postRotate(90);
+            bgimage = Bitmap.createBitmap(bgimage, 0, 0, bgimage.getWidth(), bgimage.getHeight(), matrix, true);
+        } else {
+            PointF lt = transformCoordinates(new PointF(0, 0));
+            PointF rb = transformCoordinates(new PointF(bgimage.getWidth() / bitmapScale, bgimage.getHeight() / bitmapScale));
+            backgroundRect = new Rect((int) lt.x, (int) lt.y, (int) rb.x, (int) rb.y);
+        }
         Log.d("SizeChanged", "Width: " + drawableWidth + " Height: " + drawableHeight + " Radius: " + radiusCities);
 
     }
@@ -137,6 +158,7 @@ public class MapView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+        drawBgImage(canvas);
         if (gameMap != null) {
 
             //Log.i("Draw Map","Drawing edges");
@@ -183,7 +205,7 @@ public class MapView extends View {
                     mCityCirclePaint.setColor(mCityCircleColor);
                 }
                 if (city.equals(selectedCity))
-                    canvas.drawCircle(center.x, center.y, 2 * this.radiusCities, mCityCirclePaint);
+                    canvas.drawCircle(center.x, center.y, 1.5f * this.radiusCities, mCityCirclePaint);
                 else
                     canvas.drawCircle(center.x, center.y, this.radiusCities, mCityCirclePaint);
                 cityLocations.put(center, city);
@@ -197,6 +219,13 @@ public class MapView extends View {
         } else {
             Log.i("Draw Map", "Game Map is null");
         }
+    }
+
+    private void drawBgImage(Canvas canvas) {
+        //canvas.getClipBounds(r);
+        //bgimage.setBounds(r);
+        canvas.drawBitmap(bgimage, null, backgroundRect, null);
+        //bgimage.draw(canvas);
     }
 
     public void setOnEdgeSelectedListener(OnEdgeSelectedListener mListener) {
@@ -316,6 +345,13 @@ public class MapView extends View {
         float cyout = cyin * normalizationFactorY + yoffset;
         //Log.d("CoordTransform","("+cxin+","+cyin+") to ("+cxout+","+cyout+")");
         return new PointF(cxout, cyout);
+    }
+
+    private Rect transformRect(Rect rect) {
+        PointF lt = transformCoordinates(new PointF(rect.left, rect.top));
+        PointF rb = transformCoordinates(new PointF(rect.right, rect.bottom));
+        return new Rect((int) lt.x, (int) lt.y, (int) rb.x, (int) rb.y);
+
     }
 
     private City obtainCity(PointF coordinates) {

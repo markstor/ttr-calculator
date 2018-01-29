@@ -4,13 +4,11 @@ import android.graphics.Color;
 import android.util.Log;
 import android.util.Xml;
 
-import com.casalprim.marc.tickettoridecalculator.R;
-import com.casalprim.marc.tickettoridecalculator.ui.MainActivity;
-
 import org.xmlpull.v1.XmlPullParser;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -19,8 +17,7 @@ import java.util.Map;
 /**
  * Created by marc on 16/01/18.
  */
-@SuppressWarnings("serial")
-public class Game {
+public class Game implements Serializable {
 
     public static final Map<Player.PlayerColor, Integer> PLAYER_COLOR_MAP;
     public static final Map<Player.PlayerColor, Integer> PLAYER_TEXT_COLOR_MAP;
@@ -50,10 +47,10 @@ public class Game {
     private ArrayList<RouteCard> routeCards;
     private GameMap gameMap;
 
-    public Game() {
+    public Game(InputStream mapInputStream, InputStream routeCardsInputStream) {
         this.players = new HashMap<>();
-        this.routeCards = generateRouteCards(R.raw.routecards_eur);
-        this.gameMap = new GameMap();
+        this.routeCards = generateRouteCards(routeCardsInputStream);
+        this.gameMap = new GameMap(mapInputStream);
     }
 
     public GameMap getGameMap() {
@@ -141,13 +138,12 @@ public class Game {
     }
 
 
-    public ArrayList<RouteCard> generateRouteCards(int XMLfileID) {
+    public ArrayList<RouteCard> generateRouteCards(InputStream stream) {
         ArrayList<RouteCard> list = new ArrayList<>();
         XmlPullParser parser = Xml.newPullParser();
-        InputStream stream = null;
         try {
             // auto-detect the encoding from the stream
-            stream = MainActivity.RESOURCES.openRawResource(XMLfileID);
+            //stream = MainActivity.RESOURCES.openRawResource(XMLfileID);
             parser.setInput(stream, null);
             int eventType = parser.getEventType();
             boolean done = false;

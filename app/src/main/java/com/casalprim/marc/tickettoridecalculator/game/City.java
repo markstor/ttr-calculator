@@ -46,6 +46,9 @@ public class City implements Serializable {
     }
 
     public void addEdge(Edge edge) {
+        if (this.edges.contains(edge)) {
+            Log.d("AddEdge", "Repeated edge " + edge.toString());
+        }
         this.edges.add(edge);
     }
 
