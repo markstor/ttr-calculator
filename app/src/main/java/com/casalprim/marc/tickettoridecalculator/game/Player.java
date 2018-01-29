@@ -14,7 +14,7 @@ import java.util.Map;
 
 public class Player implements Serializable {
     public static final int TOTAL_NUMBER_OF_TRAINS = 45;
-    static final Map<Integer, Integer> SCORE_TABLE = scoreMapConstructor();
+    public static final Map<Integer, Integer> SCORE_TABLE = scoreMapConstructor();
     private boolean hasLongestPath;
     private String name;
     private PlayerColor color;
@@ -42,6 +42,10 @@ public class Player implements Serializable {
         return Collections.unmodifiableMap(result);
     }
 
+    public int getUnusedStations() {
+        return unusedStations;
+    }
+
     public String getName() {
         if (name == null) {
             return this.getColor().name();
@@ -65,6 +69,7 @@ public class Player implements Serializable {
         if (!this.routes.contains(card)) {
             this.routes.add(card);
             card.setOwner(this);
+            this.checkRouteCards();
         }
     }
 
@@ -72,6 +77,7 @@ public class Player implements Serializable {
         if (this.routes.contains(card)) {
             this.routes.remove(card);
             card.setOwned(false);
+            card.setCompleted(false);
         }
     }
 
@@ -86,6 +92,12 @@ public class Player implements Serializable {
     public ArrayList<Edge> computeLongestPath() {
         longestPath = trains.computeLongestPath();
         return longestPath;
+    }
+
+    public void checkRouteCards() {
+        for (RouteCard card : routes) {
+            card.setCompleted(this.trains.checkRouteCard(card));
+        }
     }
 
     public ArrayList<Edge> getLongestPath() {
@@ -133,9 +145,23 @@ public class Player implements Serializable {
     public void addTrain(Edge edge) {
         if (edge != null) {
             //Log.d("addTrain",city1.getName()+" to "+city2.getName()+" length:"+edge.getWeight());
-            this.trains.addTrain(edge);
-            edge.addOccupant(this);
-            this.computeLongestPath();
+            if (edge.canAdd(this)) {
+                this.trains.addTrain(edge);
+                edge.addOccupant(this);
+                this.computeLongestPath();
+                this.checkRouteCards();
+            }
+        }
+    }
+
+    public void unassignEverything() {
+        for (RouteCard card : routes) {
+            card.setCompleted(false);
+            card.setOwned(false);
+        }
+        for (Edge track = this.trains.getDeployedTrains()) {
+            this.trains.removeTrain(track);
+            track.removeOccupant(this);
         }
     }
 
@@ -145,6 +171,7 @@ public class Player implements Serializable {
             this.trains.removeTrain(edge);
             edge.removeOccupant(this);
             this.computeLongestPath();
+            this.checkRouteCards();
         }
     }
 

@@ -1,25 +1,33 @@
 package com.casalprim.marc.tickettoridecalculator.ui.fragments;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.casalprim.marc.tickettoridecalculator.R;
+import com.casalprim.marc.tickettoridecalculator.game.Game;
 import com.casalprim.marc.tickettoridecalculator.game.Player;
+import com.casalprim.marc.tickettoridecalculator.game.RouteCard;
 import com.casalprim.marc.tickettoridecalculator.game.TrainMap;
 import com.casalprim.marc.tickettoridecalculator.ui.GameEditionByFragmentListener;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+
+import static com.casalprim.marc.tickettoridecalculator.game.Player.SCORE_TABLE;
 
 public class ScoreBoardFragment extends Fragment {
 
@@ -59,55 +67,154 @@ public class ScoreBoardFragment extends Fragment {
             return inflater.inflate(R.layout.layout_no_players, container, false);
         }
         View view = inflater.inflate(R.layout.fragment_score_board, container, false);
-        buildTables((LinearLayout) view);
+        buildTables((LinearLayout) view.findViewById(R.id.tableLinearLayout));
         return view;
     }
 
     private void buildTables(LinearLayout view) {
         for (Player.PlayerColor pColor : playersInGame.keySet()) {
+            int bgColor = Game.PLAYER_COLOR_MAP.get(pColor);
+            int bgLtColor = Color.argb(200, Color.red(bgColor), Color.green(bgColor), Color.blue(bgColor));
+            int txtColor = Game.PLAYER_TEXT_COLOR_MAP.get(pColor);
+
             TableLayout table = new TableLayout(view.getContext());
-            TableLayout.LayoutParams lParams = new TableLayout.LayoutParams();
-            lParams.width = 0;
+            view.addView(table);
+            LinearLayout.LayoutParams lParams = (LinearLayout.LayoutParams) table.getLayoutParams();
+            lParams.width = LayoutParams.WRAP_CONTENT;
             lParams.height = LayoutParams.MATCH_PARENT;
             lParams.weight = 1f;
+            //lParams.setMargins(20,20,20,20);
             table.setLayoutParams(lParams);
+            table.setPadding(20, 20, 20, 20);
+            table.setBackgroundColor(bgLtColor);
             Player player = playersInGame.get(pColor);
             TableRow tableHeader = new TableRow(view.getContext());
+            tableHeader.setBackgroundColor(bgColor);
             TextView headerText = new TextView(view.getContext());
+            headerText.setTextColor(txtColor);
             headerText.setText(player.getName());
             headerText.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+            headerText.setTypeface(null, Typeface.BOLD);
+            tableHeader.setLayoutParams(new TableLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+            tableHeader.setGravity(Gravity.CENTER);
             tableHeader.addView(headerText);
+            TableRow.LayoutParams trParams = (TableRow.LayoutParams) headerText.getLayoutParams();
+            trParams.span = 2;
+            headerText.setLayoutParams(trParams);
             table.addView(tableHeader);
+            table.setColumnStretchable(0, true);
 
-            ScrollView scrollViewLayout = new ScrollView(view.getContext());
-            scoreTable = new TableLayout(view.getContext());
+
+            //tlParams.width=LayoutParams.MATCH_PARENT;
+
+            addInfoTrains(table, player.getTrainMap(), bgColor, bgLtColor, txtColor);
+            int longestPathScore = 0;
+            if (player.hasLongestPath()) {
+                longestPathScore = 10;
+            }
+            addNewRow(table, "Longest Path", longestPathScore, bgColor, txtColor);
+            addNewRow(table, "Stations", player.getUnusedStations() * 4, bgColor, txtColor);
+
+
+            addInfoCards(table, player.getRoutes(), bgColor, bgLtColor, txtColor);
+
+
+            TableLayout.LayoutParams tlParams = new TableLayout.LayoutParams();
+            tlParams.weight = 1f;
 
             TableRow totalRow = new TableRow(view.getContext());
+            totalRow.setLayoutParams(tlParams);
+            //totalRow.setBackgroundColor(bgColor);
             TextView totalNameText = new TextView(view.getContext());
+            totalNameText.setTextColor(txtColor);
+            totalNameText.setBackgroundColor(bgColor);
             TextView totalValueText = new TextView(view.getContext());
+            totalValueText.setTextColor(txtColor);
+            totalValueText.setBackgroundColor(bgColor);
+            totalNameText.setTypeface(null, Typeface.BOLD);
+            totalValueText.setTypeface(null, Typeface.BOLD);
             totalNameText.setText("Total");
             totalValueText.setText(String.format("%d", player.getScore()));
+            totalNameText.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20);
+            totalValueText.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20);
+
             totalRow.addView(totalNameText);
             totalRow.addView(totalValueText);
-            scoreTable.addView(totalRow);
+            totalRow.setGravity(Gravity.BOTTOM);
+            //scoreTable.addView(totalRow);
 
-            TableRow longestPathRow = new TableRow(view.getContext());
-            TextView longestPathNameText = new TextView(view.getContext());
-            TextView longestPathValueText = new TextView(view.getContext());
-            longestPathNameText.setText("Longest Path");
-            longestPathValueText.setText(String.format("%d", TrainMap.length(player.getLongestPath())));
-            longestPathRow.addView(longestPathNameText);
-            longestPathRow.addView(longestPathValueText);
-            scoreTable.addView(longestPathRow);
-
-
-            scrollViewLayout.addView(scoreTable);
-            table.addView(scrollViewLayout);
-
-            view.addView(table);
+            //table.addView(scoreTable);
+            table.addView(totalRow);
 
 
         }
+    }
+
+    private void addInfoTrains(TableLayout scoreTable, TrainMap trainMap, int bgColor, int bgLtColor, int txtColor) {
+        int score = 0;
+        HashMap<Integer, Integer> trainsDistribution = trainMap.getTrainsDistribution();
+        for (int trainLength : trainsDistribution.keySet()) {
+            score += SCORE_TABLE.get(trainLength) * trainsDistribution.get(trainLength);
+        }
+        addNewRow(scoreTable, "Trains", score, bgColor, txtColor);
+
+        for (int trainLength : trainsDistribution.keySet()) {
+            int number = trainsDistribution.get(trainLength);
+            score = SCORE_TABLE.get(trainLength) * number;
+            addNewRowIndented(scoreTable, String.format("%dTx%d", trainLength, number), score, bgLtColor, txtColor);
+        }
+    }
+
+    private void addInfoCards(TableLayout scoreTable, ArrayList<RouteCard> routes, int bgColor, int bgLtColor, int txtColor) {
+        int score = 0;
+        for (RouteCard card : routes) {
+            if (card.isCompleted())
+                score += card.getPoints();
+            else
+                score -= card.getPoints();
+        }
+        addNewRow(scoreTable, "Tickets", score, bgColor, txtColor);
+
+        for (RouteCard card : routes) {
+            if (card.isCompleted())
+                score = card.getPoints();
+            else
+                score = card.getPoints();
+            addNewRowIndented(scoreTable, card.getFrom() + "-" + card.getTo(), score, bgLtColor, txtColor);
+        }
+    }
+
+    private void addNewRowIndented(TableLayout scoreTableView, String name, int value, int bgColor, int txtColor) {
+        TableRow tableRow = new TableRow(scoreTableView.getContext());
+        //tableRow.setBackgroundColor(bgColor);
+        TextView nameText = new TextView(scoreTableView.getContext());
+        TextView valueText = new TextView(scoreTableView.getContext());
+        nameText.setTextColor(txtColor);
+        valueText.setTextColor(txtColor);
+        nameText.setText("\t" + name);
+        valueText.setText(String.format("%d", value));
+        valueText.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_END);
+        tableRow.addView(nameText);
+        tableRow.addView(valueText);
+        scoreTableView.addView(tableRow);
+    }
+
+    private void addNewRow(TableLayout scoreTableView, String name, int value, int bgColor, int txtColor) {
+        TableRow tableRow = new TableRow(scoreTableView.getContext());
+        tableRow.setBackgroundColor(bgColor);
+        TextView nameText = new TextView(scoreTableView.getContext());
+        TextView valueText = new TextView(scoreTableView.getContext());
+        nameText.setTextColor(txtColor);
+        valueText.setTextColor(txtColor);
+        nameText.setTypeface(null, Typeface.BOLD);
+        valueText.setTypeface(null, Typeface.BOLD);
+        nameText.setText(name);
+        valueText.setText(String.format("%d", value));
+        valueText.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_END);
+        nameText.setPadding(0, 0, 20, 0);
+        tableRow.addView(nameText);
+        tableRow.addView(valueText);
+        scoreTableView.addView(tableRow);
     }
 
     public void onButtonPressed(Uri uri) {

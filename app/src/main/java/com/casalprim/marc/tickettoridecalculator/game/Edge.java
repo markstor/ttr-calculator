@@ -117,6 +117,16 @@ public class Edge implements Serializable {
             this.occupants.add(player);
     }
 
+    public boolean canAdd(Player player) {
+        if (this.occupants.size() < this.width) { // if there is a free slot
+            if (!this.occupants.contains(player)) { //if it is not aredy occupied by the player
+                return true;
+            }
+        }
+        return false;
+
+    }
+
     public void removeOccupant(Player player) {
         this.occupants.remove(player);
     }

@@ -125,6 +125,9 @@ public class PlayerCardsFragment extends Fragment {
             }
         });
 
+        TextView bottomLabel = (TextView) view.findViewById(R.id.assigned_cards_text);
+        bottomLabel.setText("Assigned cards for player " + player.getName());
+
         return view;
     }
 

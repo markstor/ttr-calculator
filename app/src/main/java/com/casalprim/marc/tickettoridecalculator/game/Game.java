@@ -27,11 +27,11 @@ public class Game {
 
     static {
         Map<Player.PlayerColor, Integer> aMap = new HashMap<>();
-        aMap.put(Player.PlayerColor.RED, Color.RED);
-        aMap.put(Player.PlayerColor.GREEN, Color.GREEN);
-        aMap.put(Player.PlayerColor.YELLOW, Color.YELLOW);
-        aMap.put(Player.PlayerColor.BLACK, Color.BLACK);
-        aMap.put(Player.PlayerColor.BLUE, Color.BLUE);
+        aMap.put(Player.PlayerColor.RED, Color.parseColor("#E94320"));
+        aMap.put(Player.PlayerColor.GREEN, Color.parseColor("#2B7844"));
+        aMap.put(Player.PlayerColor.YELLOW, Color.parseColor("#FFD943"));
+        aMap.put(Player.PlayerColor.BLACK, Color.parseColor("#0E0C00"));
+        aMap.put(Player.PlayerColor.BLUE, Color.parseColor("#2771AC"));
         PLAYER_COLOR_MAP = Collections.unmodifiableMap(aMap);
     }
 
@@ -72,12 +72,13 @@ public class Game {
         this.players = players;
     }
 
-    public Player addNewPlayer(Player.PlayerColor color) {
-        return this.players.put(color, new Player(color));
+    public void addNewPlayer(Player.PlayerColor color) {
+        this.players.put(color, new Player(color));
     }
 
-    public Player removePlayer(Player.PlayerColor color) {
-        return this.players.remove(color);
+    public void removePlayer(Player.PlayerColor color) {
+        Player player = this.players.remove(color);
+        player.unassignEverything();
     }
 
     public ArrayList<RouteCard> getRouteCards() {
@@ -107,11 +108,13 @@ public class Game {
     public void addTrain(Player.PlayerColor color, Edge edge) {
         Player player = this.players.get(color);
         player.addTrain(edge);
+        getLongestPathPlayers();
     }
 
     public void removeTrain(Player.PlayerColor color, Edge edge) {
         Player player = this.players.get(color);
         player.removeTrain(edge);
+        getLongestPathPlayers();
     }
 
     public ArrayList<Player> getLongestPathPlayers() {
@@ -127,6 +130,12 @@ public class Game {
             } else if (len == maxLength) {
                 longestPathPlayers.add(player);
             }
+        }
+        for (Player player : players.values()) {
+            if (longestPathPlayers.contains(player))
+                player.setLongestPath(true);
+            else
+                player.setLongestPath(false);
         }
         return longestPathPlayers;
     }

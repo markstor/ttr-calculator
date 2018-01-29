@@ -3,36 +3,39 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
 
-    <group android:checkableBehavior="single">
+    <group
+        android:id="@+id/fragment_selector_group"
+        android:checkableBehavior="single">
         <item
             android:id="@+id/players"
-            android:icon="@drawable/ic_menu_camera"
+            android:icon="@drawable/ic_players_icon"
             android:title="Players" />
         <item
             android:id="@+id/map"
-            android:icon="@drawable/ic_menu_gallery"
+            android:icon="@drawable/ic_map_black_24dp"
             android:title="Map" />
         <item
             android:id="@+id/cards"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="Route Cards" />
+            android:icon="@drawable/ic_tickets"
+            android:title="Tickets" />
         <item
             android:id="@+id/scoreboard"
-            android:icon="@drawable/ic_menu_manage"
+            android:icon="@drawable/ic_view_list_black_24dp"
             android:title="Scoreboard" />
     </group>
 
-    <group android:checkableBehavior="single">
-        <menu>
-            <item
-                android:id="@+id/settings"
-                android:icon="@drawable/ic_menu_share"
-                android:title="Settings" />
-            <item
-                android:id="@+id/about"
-                android:icon="@drawable/ic_menu_send"
-                android:title="About" />
-        </menu>
+    <group
+        android:id="@+id/extras_group"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/settings"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="Settings" />
+        <item
+            android:id="@+id/about"
+            android:icon="@drawable/ic_menu_send"
+            android:title="About" />
     </group>
+
 
 </menu>

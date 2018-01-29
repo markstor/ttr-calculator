@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 
 /**
  * Created by marc on 16/01/18.
@@ -20,7 +21,6 @@ public class TrainMap implements Serializable {
     private HashSet<Edge> deployedTrains;
     private HashMap<PairS<City>, ArrayList<Edge>> longestPaths;
     private HashMap<City, HashSet<Pair<City, Edge>>> citiesAdjList;
-
     public TrainMap() {
         //initialize set of trains
         this.deployedTrains = new HashSet<>();
@@ -34,13 +34,17 @@ public class TrainMap implements Serializable {
         return length;
     }
 
+    public HashSet<Edge> getDeployedTrains() {
+        return deployedTrains;
+    }
+
     public HashMap<Integer, Integer> getTrainsDistribution() {
         HashMap<Integer, Integer> trainsDistribution = new HashMap<Integer, Integer>();
         for (Edge edge : deployedTrains) {
             int trainLength = edge.getWeight();
             Integer previousCount = trainsDistribution.get(trainLength);
             if (previousCount == null)  //no previous value
-                trainsDistribution.put(trainLength, 0);
+                trainsDistribution.put(trainLength, 1);
             else
                 trainsDistribution.put(trainLength, previousCount + 1);
         }
@@ -67,7 +71,6 @@ public class TrainMap implements Serializable {
     }
 
     public void removeTrain(Edge edge) {
-        //SimpleEntry has symmetric hash city1,city2 == city2,city1
         boolean result = deployedTrains.remove(edge);
         if (result) {
             Log.i("Remove train", "Train removed");
@@ -131,7 +134,7 @@ public class TrainMap implements Serializable {
         return longestPath;
     }
 
-    private ArrayList<Edge> getLongestPathFromTo(City from, City to) {
+    public ArrayList<Edge> getLongestPathFromTo(City from, City to) {
         Log.d("getLongestPathFromTo", "From: " + from + " To: " + to);
         HashSet<Edge> usedEdges = new HashSet<>();
         ArrayList<Edge> voidPath = new ArrayList<>();
@@ -183,12 +186,12 @@ public class TrainMap implements Serializable {
             currentPath.add(edgeUsedToGetThere);
         }
         ArrayList<Pair<City, Edge>> childEdgesList = getValidAdjacencies(start, usedEdges);
-        if (childEdgesList.isEmpty()) {// || start.equals(target)){
+        // if (childEdgesList.isEmpty()) {// || start.equals(target)){
             if (start.equals(target)) {
                 paths.add(currentPath);
             }
-            return paths;
-        }
+        //    return paths;
+        // }
         for (Pair<City, Edge> pair : childEdgesList) {
             City city = pair.first;
             Edge edge = pair.second;
@@ -209,5 +212,27 @@ public class TrainMap implements Serializable {
             }
         }
         return validAdjacencies;
+    }
+
+    public boolean checkRouteCard(RouteCard card) {
+        String fromStr = card.getFrom();
+        String toStr = card.getTo();
+        City from = null;
+        City to = null;
+        if (citiesAdjList == null) {
+            return false;
+        }
+        for (City city : citiesAdjList.keySet()) {
+            if (city.getName().equalsIgnoreCase(fromStr))
+                from = city;
+            if (city.getName().equalsIgnoreCase(toStr))
+                to = city;
+        }
+        if (from == null || to == null) {
+            return false;
+        } else {
+            List<Edge> path = this.getLongestPathFromTo(from, to);
+            return path.size() > 1;
+        }
     }
 }

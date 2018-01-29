@@ -2,9 +2,12 @@ package com.casalprim.marc.tickettoridecalculator.ui.adapters;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.casalprim.marc.tickettoridecalculator.game.RouteCard;
@@ -57,20 +60,38 @@ public class CardsAdapter extends BaseAdapter {
 
     @Override
     public View getView(int i, View convertView, ViewGroup viewGroup) {
-        TextView textview = new TextView(context);
+        LinearLayout ll;
         if (convertView == null) {
-            // if it's not recycled, initialize some attributes
-            //textview.setLayoutParams(new GridView.LayoutParams(85, 85));
-            //textview.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            //textview.setPadding(8, 8, 8, 8);
-            textview.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-            textview.setTextColor(Color.BLACK);
+
+            ll = new LinearLayout(context);
+            ll.setOrientation(LinearLayout.VERTICAL);
+            ll.setGravity(Gravity.CENTER);
         } else {
-            textview = (TextView) convertView;
+            ll = (LinearLayout) convertView;
+            ll.removeAllViewsInLayout();
         }
         RouteCard card = cards.get(i);
+        if (card.isCompleted()) {
+            ll.setBackgroundColor(Color.argb(200, 20, 230, 20));
+        } else {
+            ll.setBackgroundColor(Color.argb(200, 230, 20, 20));
+        }
 
-        textview.setText(card.getFrom() + " - " + card.getTo() + "  " + card.getPoints());
-        return textview;
+
+        TextView fromView = new TextView(context);
+        fromView.setText(card.getFrom());
+        fromView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        TextView pointsView = new TextView(context);
+        pointsView.setText(((Integer) card.getPoints()).toString());
+        pointsView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        pointsView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20);
+        TextView toView = new TextView(context);
+        toView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        toView.setText(card.getTo());
+
+        ll.addView(fromView);
+        ll.addView(pointsView);
+        ll.addView(toView);
+        return ll;
     }
 }

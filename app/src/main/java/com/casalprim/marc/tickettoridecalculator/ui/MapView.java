@@ -21,6 +21,7 @@ import com.casalprim.marc.tickettoridecalculator.game.Player;
 import java.util.HashMap;
 
 import static com.casalprim.marc.tickettoridecalculator.game.Game.PLAYER_COLOR_MAP;
+import static com.casalprim.marc.tickettoridecalculator.game.Game.PLAYER_TEXT_COLOR_MAP;
 
 /**
  * Created by marc on 22/01/18.
@@ -100,7 +101,7 @@ public class MapView extends View {
         this.selectedColor = selectedColor;
         mCityHighlightedColor = PLAYER_COLOR_MAP.get(selectedColor);
         mSelectionStrokeColor = PLAYER_COLOR_MAP.get(selectedColor);
-        mCityHighlightedNameColor = Color.BLACK;
+        mCityHighlightedNameColor = PLAYER_TEXT_COLOR_MAP.get(selectedColor);
         mSelectionStrokePaint.setColor(mSelectionStrokeColor);
         //mCityNamePaint.setColor(mCityNameColor);
         invalidate();
@@ -178,9 +179,13 @@ public class MapView extends View {
                     mCityCirclePaint.setColor(mCityHighlightedColor);
                     mCityNamePaint.setColor(mCityHighlightedNameColor);
                 } else {
+                    mCityNamePaint.setColor(mCityNameColor);
                     mCityCirclePaint.setColor(mCityCircleColor);
                 }
-                canvas.drawCircle(center.x, center.y, this.radiusCities, mCityCirclePaint);
+                if (city.equals(selectedCity))
+                    canvas.drawCircle(center.x, center.y, 2 * this.radiusCities, mCityCirclePaint);
+                else
+                    canvas.drawCircle(center.x, center.y, this.radiusCities, mCityCirclePaint);
                 cityLocations.put(center, city);
 
                 String cityInitial = city.getName().substring(0, 1).toUpperCase();
@@ -214,6 +219,25 @@ public class MapView extends View {
                 mPosX = x;
                 mPosY = y;
                 //Log.d("TouchEvent","Action Down"+" ("+ mLastCityTouchX +","+ mLastCityTouchY +")");
+                City city = obtainCity(new PointF(x, y));
+
+                //Log.d("TouchEvent","Action Move"+" ("+ mLastCityTouchX +","+ mLastCityTouchY +") to ("+ mPosX +","+ mPosY+")");
+
+                if (city != null) {
+                    if (selectedCity == null) { //no previous
+                        selectedCity = city;
+                        PointF cityCoordinates = transformCoordinates(city.getCoordX(), city.getCoordY());
+                        mLastCityTouchX = cityCoordinates.x;
+                        mLastCityTouchY = cityCoordinates.y;
+                    } else if (!selectedCity.equals(city)) {//add edge
+                        assignEdge(selectedCity, city, selectedColor);
+                        selectedCity = city;
+                        mLastCityTouchX = -1;
+                        mLastCityTouchY = -1;
+                    }
+                }
+
+                invalidate();
                 break;
             }
 
@@ -221,12 +245,8 @@ public class MapView extends View {
                 final float x = event.getX();
                 final float y = event.getY();
 
-                // Calculate the distance moved
-                final float dx = x - mPosX;
-                final float dy = y - mPosY;
-
-                mPosX += dx;
-                mPosY += dy;
+                mPosX = x;
+                mPosY = y;
 
                 City city = obtainCity(new PointF(x, y));
 
@@ -235,8 +255,9 @@ public class MapView extends View {
                 if (city != null) {
                     if (selectedCity == null) { //no previous
                         selectedCity = city;
-                        mLastCityTouchX = x;
-                        mLastCityTouchY = y;
+                        PointF cityCoordinates = transformCoordinates(city.getCoordX(), city.getCoordY());
+                        mLastCityTouchX = cityCoordinates.x;
+                        mLastCityTouchY = cityCoordinates.y;
                     } else if (!selectedCity.equals(city)) {//add edge
                         assignEdge(selectedCity, city, selectedColor);
                         selectedCity = city;
