@@ -4,7 +4,6 @@
     <string name="title_activity_main">Puntuador de Ticket to Ride</string>
     <string name="navigation_drawer_open">Obrir calaixera de navegació</string>
     <string name="navigation_drawer_close">Tancar calaixera de navegació</string>
-    <string name="action_settings">Ajustos</string>
     <string name="select_players_label">Selecciona els jugadors</string>
     <string name="assign_ticket_from">Assignar carta desde</string>
     <string name="back">Enrere</string>
@@ -18,7 +17,7 @@
     <string name="players">Selecció de jugadors</string>
     <string name="map">Mapa de trens</string>
     <string name="tickets">Cartes de ruta</string>
-    <string name="scoreboard">Marcador</string>
+    <string name="scoreboard">Marcador final</string>
     <string name="settings">Ajustaments</string>
     <string name="about">Sobre</string>
     <string name="trains">Trens</string>
@@ -30,4 +29,7 @@
     <string name="not_enough_trains_zero">Trens insuficients. Al jugador %2$s no li queda cap tren.</string>
     <string name="not_enough_trains_one">Trens insuficients. Al jugador %2$s només li queda un tren.</string>
     <string name="not_enough_trains_other">Trens insuficients. Al jugador %2$s només li queden %1$d trens.</string>
+    <string name="ok">Canviar</string>
+    <string name="change_name">Canviar el nom del jugador</string>
+    <string name="cancel">Cancel·lar</string>
 </resources>

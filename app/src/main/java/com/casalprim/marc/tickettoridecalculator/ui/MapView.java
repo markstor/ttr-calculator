@@ -13,7 +13,6 @@ import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
-import android.view.ScaleGestureDetector;
 import android.view.View;
 
 import com.casalprim.marc.tickettoridecalculator.game.City;
@@ -32,7 +31,7 @@ import static com.casalprim.marc.tickettoridecalculator.game.Game.PLAYER_TEXT_CO
  */
 
 public class MapView extends View {
-    private PointF center, d, p1, p2;
+    private PointF p1, p2;
     private Player.PlayerColor selectedColor;
     private OnEdgeSelectedListener mListener;
     private City selectedCity;
@@ -42,11 +41,9 @@ public class MapView extends View {
     private GameMap gameMap;
     private float radiusCities;
     private float mapWidth, mapHeight;
-    private float drawableWidth, drawableHeight, xpad, ypad;
+    private float drawableWidth, drawableHeight;
     private HashMap<PointF, City> cityLocations;
-    private float normalizationFactor;
     private boolean rotateCityCoordinates;
-    private ScaleGestureDetector mScaleDetector;
     private float mLastCityTouchX, mLastCityTouchY;
     private float mPosX, mPosY;
     private float mTrackWidthFactor, mTrackInLongPathWidthFactor;
@@ -72,7 +69,7 @@ public class MapView extends View {
         cityLocations = new HashMap<>();
         //mScaleDetector = new ScaleGestureDetector();
         mCityCircleColor = Color.LTGRAY;
-        spRadiusSize = 10;
+        spRadiusSize = 15;
         radiusCities = spRadiusSize * getResources().getDisplayMetrics().scaledDensity;
         mTrackWidthFactor = 0.3f;
         mTrackInLongPathWidthFactor = 2f * mTrackWidthFactor;
@@ -92,7 +89,6 @@ public class MapView extends View {
         mSelectionStrokeColor = Color.LTGRAY;
         mSelectionStrokePaint.setStrokeWidth(mTrackWidthFactor * radiusCities);
         mCityNamePaint.setTextSize(radiusCities);
-        normalizationFactor = 0.8f;
         rotateCityCoordinates = true;
         drawableHeight = 1200;
         drawableWidth = 900;
@@ -129,8 +125,8 @@ public class MapView extends View {
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
         // Account for padding
-        xpad = (float) (getPaddingLeft() + getPaddingRight());
-        ypad = (float) (getPaddingTop() + getPaddingBottom());
+        float xpad = (float) (getPaddingLeft() + getPaddingRight());
+        float ypad = (float) (getPaddingTop() + getPaddingBottom());
         float extraPadding = 0;//1.5f * radiusCities;
 
         drawableWidth = (float) w - xpad - extraPadding;
@@ -355,13 +351,6 @@ public class MapView extends View {
         float cyout = cyin * normalizationFactorY + yoffset;
         //Log.d("CoordTransform","("+cxin+","+cyin+") to ("+cxout+","+cyout+")");
         return new PointF(cxout, cyout);
-    }
-
-    private Rect transformRect(Rect rect) {
-        PointF lt = transformCoordinates(new PointF(rect.left, rect.top));
-        PointF rb = transformCoordinates(new PointF(rect.right, rect.bottom));
-        return new Rect((int) lt.x, (int) lt.y, (int) rb.x, (int) rb.y);
-
     }
 
     private City obtainCity(PointF coordinates) {

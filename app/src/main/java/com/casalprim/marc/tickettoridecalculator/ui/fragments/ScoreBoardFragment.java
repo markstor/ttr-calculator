@@ -25,6 +25,7 @@ import com.casalprim.marc.tickettoridecalculator.game.TrainMap;
 import com.casalprim.marc.tickettoridecalculator.ui.GameEditionByFragmentListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Locale;
 
@@ -108,16 +109,23 @@ public class ScoreBoardFragment extends Fragment {
 
             //tlParams.width=LayoutParams.MATCH_PARENT;
 
-            addInfoTrains(table, player.getTrainMap(), bgColor, bgLtColor, txtColor);
-            int longestPathScore = 0;
-            if (player.hasLongestPath()) {
-                longestPathScore = 10;
+            boolean show0points = false; //show information that doesn't add points to the player?
+
+            if (show0points || !player.getTrainMap().getDeployedTrains().isEmpty())
+                addInfoTrains(table, player.getTrainMap(), bgColor, bgLtColor, txtColor);
+
+            if (show0points || player.hasLongestPath()) {
+                int longestPathScore = 0;
+                if (player.hasLongestPath()) {
+                    longestPathScore = 10;
+                }
+                addNewRow(table, getString(R.string.longest_path), longestPathScore, bgColor, txtColor);
             }
-            addNewRow(table, getString(R.string.longest_path), longestPathScore, bgColor, txtColor);
-            addNewRow(table, getString(R.string.stations), player.getUnusedStations() * 4, bgColor, txtColor);
+            if (show0points || player.getUnusedStations() > 0)
+                addNewRow(table, getString(R.string.stations), player.getUnusedStations() * 4, bgColor, txtColor);
 
-
-            addInfoCards(table, player.getRoutes(), bgColor, bgLtColor, txtColor);
+            if (show0points || !player.getRoutes().isEmpty())
+                addInfoCards(table, player.getRoutes(), bgColor, bgLtColor, txtColor);
 
 
             TableLayout.LayoutParams tlParams = new TableLayout.LayoutParams();
@@ -159,7 +167,9 @@ public class ScoreBoardFragment extends Fragment {
         }
         addNewRow(scoreTable, getString(R.string.trains), score, bgColor, txtColor);
 
-        for (int trainLength : trainsDistribution.keySet()) {
+        ArrayList<Integer> sortedKeys = new ArrayList<>(trainsDistribution.keySet());
+        Collections.sort(sortedKeys);
+        for (int trainLength : sortedKeys) {
             int number = trainsDistribution.get(trainLength);
             score = SCORE_TABLE.get(trainLength) * number;
             addNewRowIndented(scoreTable, String.format(Locale.US, "%dTx%d", trainLength, number), score, bgLtColor, txtColor);

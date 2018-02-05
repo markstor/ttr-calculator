@@ -36,9 +36,9 @@ public class PlayerButtonDrawable extends Drawable {
         paint.setColor(color);
         canvas.drawRect(b, paint);
         if (selected) {
-            this.setAlpha(100);
+            this.setAlpha(50);
             paint.setColor(color);
-            paint.setStrokeWidth(30.0f);
+            paint.setStrokeWidth(10.0f);
             paint.setStyle(Paint.Style.STROKE);
             canvas.drawRect(b, paint);
         }

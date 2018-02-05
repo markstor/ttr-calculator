@@ -222,6 +222,15 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
+    public void onPlayerNameChanged(Player.PlayerColor color, String newName) {
+        Player player = game.getPlayers().get(color);
+        if (player != null) { //if player in the game
+            player.setName(newName);
+            player.setNameEdited(true);
+        }
+    }
+
+    @Override
     public void onPlayerRemoved(Player.PlayerColor color) {
         if (game.getPlayers().containsKey(color)) { //if player in the game
             game.removePlayer(color);

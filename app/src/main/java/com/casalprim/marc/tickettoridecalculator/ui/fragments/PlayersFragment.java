@@ -1,19 +1,18 @@
 package com.casalprim.marc.tickettoridecalculator.ui.fragments;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.drawable.StateListDrawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.util.StateSet;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import com.casalprim.marc.tickettoridecalculator.R;
@@ -25,7 +24,9 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import static android.text.InputType.TYPE_TEXT_FLAG_CAP_WORDS;
 import static com.casalprim.marc.tickettoridecalculator.game.Game.PLAYER_COLOR_MAP;
+import static com.casalprim.marc.tickettoridecalculator.game.Game.PLAYER_TEXT_COLOR_MAP;
 
 public class PlayersFragment extends Fragment {
 
@@ -82,13 +83,14 @@ public class PlayersFragment extends Fragment {
     }
 
 
-    public void onButtonPressed(CompoundButton button) {
+    public void onButtonPressed(ToggleButton button) {
         if (mListener != null) {
             Player.PlayerColor color = BUTTON_ID_TO_PLAYER_COLOR_MAP.get(button.getId());
             if (button.isChecked()) {
                 mListener.onPlayerAdded(color);
             } else {
                 mListener.onPlayerRemoved(color);
+                button.setTextOn("");
             }
         }
     }
@@ -96,38 +98,38 @@ public class PlayersFragment extends Fragment {
     public void onButtonLongPressed(final ToggleButton button) {
         if (mListener != null) {
             final Player.PlayerColor color = BUTTON_ID_TO_PLAYER_COLOR_MAP.get(button.getId());
-            if (button.isChecked()) {
-                LinearLayout parent = (LinearLayout) button.getParent();
-                int index = parent.indexOfChild(button);
-                parent.removeView(button);
-                LinearLayout newChild = new LinearLayout(getContext());
-                newChild.setOrientation(((LinearLayout) parent.getParent()).getOrientation());
-                newChild.addView(button);
-                EditText editText = new EditText(getContext());
-                editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-                    @Override
-                    public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
-                        mListener.onPlayerNameChanged(color, textView.getText().toString());
-                        button.setTextOn(textView.getText());
-                        return true;
+            Player player = this.playersInGame.get(color);
+            if (player != null && button.isChecked()) {
+                AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
+                final EditText edittext = new EditText(getContext());
+                edittext.setPadding(20, 20, 20, 20);
+                edittext.setHint(player.getName());
+                edittext.setInputType(TYPE_TEXT_FLAG_CAP_WORDS);
+
+                alert.setTitle(R.string.change_name);
+
+                alert.setView(edittext);
+
+                alert.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        final String newName = edittext.getText().toString();
+                        if (!newName.equals("")) {
+                            mListener.onPlayerNameChanged(color, newName);
+                            button.setTextOn(newName);
+                            button.setChecked(button.isChecked()); //update button
+                        }
+
                     }
                 });
-                newChild.addView(editText);
-                parent.addView(newChild, index);
-                editText.requestFocus();
-                parent.invalidate();
-                parent.requestLayout();
-            } else {
-                LinearLayout parent = (LinearLayout) button.getParent();
-                if (parent.getChildCount() == 2) { //has exactly 2 childs (edit text is visible)
-                    LinearLayout grandparent = (LinearLayout) parent.getParent();
-                    int index = grandparent.indexOfChild(parent);
-                    grandparent.removeView(parent);
-                    grandparent.addView(button, index);
-                    grandparent.invalidate();
-                    grandparent.requestLayout();
-                }
 
+                alert.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        // what ever you want to do with No option.
+                    }
+                });
+
+                alert.show();
+                edittext.requestFocus();
             }
         }
     }
@@ -174,15 +176,17 @@ public class PlayersFragment extends Fragment {
             if (v instanceof ToggleButton) {
                 ToggleButton button = (ToggleButton) v;
                 int color = PLAYER_COLOR_MAP.get(BUTTON_ID_TO_PLAYER_COLOR_MAP.get(buttonId));//button.getShadowColor();
+                int textColor = PLAYER_TEXT_COLOR_MAP.get(BUTTON_ID_TO_PLAYER_COLOR_MAP.get(buttonId));
                 StateListDrawable bd = new StateListDrawable();
                 bd.addState(new int[]{android.R.attr.state_checked}, new PlayerButtonDrawable(color, true));
                 bd.addState(StateSet.WILD_CARD, new PlayerButtonDrawable(color, false));
                 button.setBackgroundDrawable(bd);
+                button.setTextColor(textColor);
 
                 button.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                        onButtonPressed(compoundButton);
+                        onButtonPressed((ToggleButton) compoundButton);
                     }
                 });
 
@@ -204,10 +208,14 @@ public class PlayersFragment extends Fragment {
         //Select players that are in the game
         for (int buttonId : BUTTON_ID_TO_PLAYER_COLOR_MAP.keySet()) {
             ToggleButton button = getView().findViewById(buttonId);
-            if (playersInGame.containsKey(BUTTON_ID_TO_PLAYER_COLOR_MAP.get(buttonId)))
+            Player player = playersInGame.get(BUTTON_ID_TO_PLAYER_COLOR_MAP.get(buttonId));
+            if (player != null) {
+                if (player.isNameEdited())
+                    button.setTextOn(player.getName());
                 button.setChecked(true);
-            else
+            } else {
                 button.setChecked(false);
+            }
         }
     }
 

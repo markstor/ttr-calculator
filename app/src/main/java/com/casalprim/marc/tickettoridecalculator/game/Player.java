@@ -22,6 +22,7 @@ public class Player implements Serializable {
     private ArrayList<RouteCard> routes;
     private int unusedStations;
     private ArrayList<Edge> longestPath;
+    private boolean isNameEdited;
 
     public Player(PlayerColor color) {
         this.color = color;
@@ -29,6 +30,7 @@ public class Player implements Serializable {
         this.routes = new ArrayList<>();
         this.longestPath = new ArrayList<>();
         this.unusedStations = 3;
+        this.isNameEdited = false;
     }
 
     private static Map<Integer, Integer> scoreMapConstructor() {
@@ -114,6 +116,14 @@ public class Player implements Serializable {
 
     public boolean isInLongestPath(Edge edge) {
         return longestPath.contains(edge);
+    }
+
+    public boolean isNameEdited() {
+        return this.isNameEdited;
+    }
+
+    public void setNameEdited(boolean edited) {
+        this.isNameEdited = edited;
     }
 
     public int getRemainingTrains() {
