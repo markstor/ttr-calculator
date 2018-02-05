@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorPrimaryLight"
     tools:context="com.casalprim.marc.tickettoridecalculator.ui.fragments.PlayersFragment">
 
     <LinearLayout
@@ -21,7 +22,8 @@
             android:gravity="bottom"
             android:text="@string/select_players_label"
             android:textAlignment="center"
-            android:textSize="30sp" />
+            android:textSize="30sp"
+            android:visibility="gone" />
 
         <LinearLayout
             android:id="@+id/playerSelectorLayout"

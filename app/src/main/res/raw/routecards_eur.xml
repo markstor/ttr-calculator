@@ -4,7 +4,11 @@
         points="10"
         to="Petrograd" />
     <card
-        from="Paris"
-        points="7"
-        to="Petrograd" />
+        from="Madrid"
+        points="10"
+        to="Berlin" />
+    <card
+        from="Barcelona"
+        points="9"
+        to="Danzig" />
 </routecards>

@@ -16,13 +16,13 @@ import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
 
-import com.casalprim.marc.tickettoridecalculator.R;
 import com.casalprim.marc.tickettoridecalculator.game.City;
 import com.casalprim.marc.tickettoridecalculator.game.Edge;
 import com.casalprim.marc.tickettoridecalculator.game.GameMap;
 import com.casalprim.marc.tickettoridecalculator.game.Player;
 
 import java.util.HashMap;
+import java.util.Locale;
 
 import static com.casalprim.marc.tickettoridecalculator.game.Game.PLAYER_COLOR_MAP;
 import static com.casalprim.marc.tickettoridecalculator.game.Game.PLAYER_TEXT_COLOR_MAP;
@@ -41,7 +41,7 @@ public class MapView extends View {
     private int spRadiusSize;
     private GameMap gameMap;
     private float radiusCities;
-    private float maxX, maxY;
+    private float mapWidth, mapHeight;
     private float drawableWidth, drawableHeight, xpad, ypad;
     private HashMap<PointF, City> cityLocations;
     private float normalizationFactor;
@@ -53,7 +53,8 @@ public class MapView extends View {
     private int mCityCircleColor, mCityHighlightedColor, mSelectionStrokeColor;
     private int mCityNameColor;
     private int mCityHighlightedNameColor;
-    private Bitmap bgimage;
+    private Bitmap bgimage, orgBgImage;
+    private float xoffset, yoffset;
 
     public MapView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -63,7 +64,8 @@ public class MapView extends View {
 
     private void init() {
         r = new Rect();
-        bgimage = BitmapFactory.decodeResource(getResources(), R.drawable.map_bg);
+
+
         selectedCity = null;
         selectedColor = null;
         mListener = null;
@@ -94,8 +96,8 @@ public class MapView extends View {
         rotateCityCoordinates = true;
         drawableHeight = 1200;
         drawableWidth = 900;
-        maxX = 800;
-        maxY = 500;
+        mapWidth = 800;
+        mapHeight = 500;
 
 
         //this.gameMap=new GameMap();
@@ -114,15 +116,12 @@ public class MapView extends View {
     }
 
     public void setGameMap(GameMap gameMap) {
-        for (City city : gameMap.getCities()) {
-            if (city.getCoordX() > maxX) maxX = city.getCoordX();
-            if (city.getCoordY() > maxY) maxY = city.getCoordY();
-        }
+
         this.gameMap = gameMap;
         invalidate();
         requestLayout();
         //updateNormFactor();
-        //Log.d("SetGameMap","maxX: "+maxX+" maxY: "+maxY+" Rotate: "+ rotateCityCoordinates +", NormFactor: "+ normalizationFactor);
+        //Log.d("SetGameMap","mapWidth: "+mapWidth+" mapHeight: "+mapHeight+" Rotate: "+ rotateCityCoordinates +", NormFactor: "+ normalizationFactor);
 
     }
 
@@ -132,24 +131,34 @@ public class MapView extends View {
         // Account for padding
         xpad = (float) (getPaddingLeft() + getPaddingRight());
         ypad = (float) (getPaddingTop() + getPaddingBottom());
-        //this.radiusCities=0.03f*w;
-        drawableWidth = (float) w - xpad - 1.5f * radiusCities;
-        drawableHeight = (float) h - ypad - 1.5f * radiusCities;
+        float extraPadding = 0;//1.5f * radiusCities;
+
+        drawableWidth = (float) w - xpad - extraPadding;
+        drawableHeight = (float) h - ypad - extraPadding;
+
+        xoffset = getPaddingLeft() + extraPadding / 2;
+        yoffset = getPaddingTop() + extraPadding / 2;
+
         rotateCityCoordinates = (drawableWidth < drawableHeight);
-        bgimage = BitmapFactory.decodeResource(getResources(), R.drawable.map_bg);
-        int bitmapScale = 3; //why???!?!?!
+
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inScaled = false;
+        orgBgImage = BitmapFactory.decodeResource(getResources(), this.gameMap.getBackgroundImageId(), options);
+        mapWidth = orgBgImage.getWidth();
+        mapHeight = orgBgImage.getHeight();
         if (rotateCityCoordinates) {
-            PointF lt = transformCoordinates(new PointF(0, bgimage.getHeight() / bitmapScale));
-            PointF rb = transformCoordinates(new PointF(bgimage.getWidth() / bitmapScale, 0));
+            PointF lt = transformCoordinates(new PointF(0, orgBgImage.getHeight()));
+            PointF rb = transformCoordinates(new PointF(orgBgImage.getWidth(), 0));
             backgroundRect = new Rect((int) lt.x, (int) lt.y, (int) rb.x, (int) rb.y);
 
             Matrix matrix = new Matrix();
             matrix.postRotate(90);
-            bgimage = Bitmap.createBitmap(bgimage, 0, 0, bgimage.getWidth(), bgimage.getHeight(), matrix, true);
+            bgimage = Bitmap.createBitmap(orgBgImage, 0, 0, orgBgImage.getWidth(), orgBgImage.getHeight(), matrix, true);
         } else {
             PointF lt = transformCoordinates(new PointF(0, 0));
-            PointF rb = transformCoordinates(new PointF(bgimage.getWidth() / bitmapScale, bgimage.getHeight() / bitmapScale));
+            PointF rb = transformCoordinates(new PointF(orgBgImage.getWidth(), orgBgImage.getHeight()));
             backgroundRect = new Rect((int) lt.x, (int) lt.y, (int) rb.x, (int) rb.y);
+            bgimage = orgBgImage;
         }
         Log.d("SizeChanged", "Width: " + drawableWidth + " Height: " + drawableHeight + " Radius: " + radiusCities);
 
@@ -158,7 +167,7 @@ public class MapView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        drawBgImage(canvas);
+        canvas.drawBitmap(bgimage, null, backgroundRect, null);
         if (gameMap != null) {
 
             //Log.i("Draw Map","Drawing edges");
@@ -186,6 +195,14 @@ public class MapView extends View {
                 } else {
                     canvas.drawLine(p1.x, p1.y, p2.x, p2.y, mEdgesPaint);
                 }
+                boolean seeLengths = false;
+                if (seeLengths) {
+                    Paint paint = new Paint();
+                    paint.setColor(Color.BLACK);
+                    paint.setTextSize(20);
+                    canvas.drawText(String.format(Locale.US, "%d", edge.getLength()), (p1.x + p2.x) / 2, (p1.y + p2.y) / 2, paint);
+                }
+
             }
             //Log.i("Draw Map","Drawing selection");
             if (mLastCityTouchX > 0 && mLastCityTouchY > 0 && mPosX > 0 && mPosY > 0) {
@@ -219,13 +236,6 @@ public class MapView extends View {
         } else {
             Log.i("Draw Map", "Game Map is null");
         }
-    }
-
-    private void drawBgImage(Canvas canvas) {
-        //canvas.getClipBounds(r);
-        //bgimage.setBounds(r);
-        canvas.drawBitmap(bgimage, null, backgroundRect, null);
-        //bgimage.draw(canvas);
     }
 
     public void setOnEdgeSelectedListener(OnEdgeSelectedListener mListener) {
@@ -290,8 +300,9 @@ public class MapView extends View {
                     } else if (!selectedCity.equals(city)) {//add edge
                         assignEdge(selectedCity, city, selectedColor);
                         selectedCity = city;
-                        mLastCityTouchX = -1;
-                        mLastCityTouchY = -1;
+                        PointF cityCoordinates = transformCoordinates(city.getCoordX(), city.getCoordY());
+                        mLastCityTouchX = cityCoordinates.x;
+                        mLastCityTouchY = cityCoordinates.y;
                     }
                 }
 
@@ -329,17 +340,16 @@ public class MapView extends View {
         float cxin = pin.x;
         float cyin = pin.y;
 
-        float normalizationFactorX = drawableWidth / maxX;
-        float normalizationFactorY = drawableHeight / maxY;
+        float normalizationFactorX = drawableWidth / mapWidth;
+        float normalizationFactorY = drawableHeight / mapHeight;
 
         if (rotateCityCoordinates) {
-            cxin = maxY - pin.y;
+            cxin = mapHeight - pin.y;
             cyin = pin.x;
-            normalizationFactorX = drawableWidth / maxY;
-            normalizationFactorY = drawableHeight / maxX;
+            normalizationFactorX = drawableWidth / mapHeight;
+            normalizationFactorY = drawableHeight / mapWidth;
         }
-        float xoffset = getPaddingLeft() + 1.1f * radiusCities;
-        float yoffset = getPaddingTop() + 1.1f * radiusCities;
+
 
         float cxout = cxin * normalizationFactorX + xoffset;
         float cyout = cyin * normalizationFactorY + yoffset;

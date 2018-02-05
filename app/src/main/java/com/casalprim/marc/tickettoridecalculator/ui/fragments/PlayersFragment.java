@@ -6,10 +6,14 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.util.StateSet;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import com.casalprim.marc.tickettoridecalculator.R;
@@ -89,6 +93,46 @@ public class PlayersFragment extends Fragment {
         }
     }
 
+    public void onButtonLongPressed(final ToggleButton button) {
+        if (mListener != null) {
+            final Player.PlayerColor color = BUTTON_ID_TO_PLAYER_COLOR_MAP.get(button.getId());
+            if (button.isChecked()) {
+                LinearLayout parent = (LinearLayout) button.getParent();
+                int index = parent.indexOfChild(button);
+                parent.removeView(button);
+                LinearLayout newChild = new LinearLayout(getContext());
+                newChild.setOrientation(((LinearLayout) parent.getParent()).getOrientation());
+                newChild.addView(button);
+                EditText editText = new EditText(getContext());
+                editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                    @Override
+                    public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+                        mListener.onPlayerNameChanged(color, textView.getText().toString());
+                        button.setTextOn(textView.getText());
+                        return true;
+                    }
+                });
+                newChild.addView(editText);
+                parent.addView(newChild, index);
+                editText.requestFocus();
+                parent.invalidate();
+                parent.requestLayout();
+            } else {
+                LinearLayout parent = (LinearLayout) button.getParent();
+                if (parent.getChildCount() == 2) { //has exactly 2 childs (edit text is visible)
+                    LinearLayout grandparent = (LinearLayout) parent.getParent();
+                    int index = grandparent.indexOfChild(parent);
+                    grandparent.removeView(parent);
+                    grandparent.addView(button, index);
+                    grandparent.invalidate();
+                    grandparent.requestLayout();
+                }
+
+            }
+        }
+    }
+
+
     @Override
     public void onStart() {
         super.onStart();
@@ -139,6 +183,14 @@ public class PlayersFragment extends Fragment {
                     @Override
                     public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                         onButtonPressed(compoundButton);
+                    }
+                });
+
+                button.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View view) {
+                        onButtonLongPressed((ToggleButton) view);
+                        return true;
                     }
                 });
 

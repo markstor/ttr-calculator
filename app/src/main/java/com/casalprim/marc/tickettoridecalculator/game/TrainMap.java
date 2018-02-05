@@ -29,7 +29,7 @@ public class TrainMap implements Serializable {
     public static int length(ArrayList<Edge> path) {
         int length = 0;
         for (Edge edge : path) {
-            length += edge.getWeight();
+            length += edge.getLength();
         }
         return length;
     }
@@ -41,7 +41,7 @@ public class TrainMap implements Serializable {
     public HashMap<Integer, Integer> getTrainsDistribution() {
         HashMap<Integer, Integer> trainsDistribution = new HashMap<Integer, Integer>();
         for (Edge edge : deployedTrains) {
-            int trainLength = edge.getWeight();
+            int trainLength = edge.getLength();
             Integer previousCount = trainsDistribution.get(trainLength);
             if (previousCount == null)  //no previous value
                 trainsDistribution.put(trainLength, 1);
@@ -54,14 +54,14 @@ public class TrainMap implements Serializable {
     public int getNumberOfTrains() {
         int sum = 0;
         for (Edge edge : deployedTrains) {
-            sum += edge.getWeight();
+            sum += edge.getLength();
         }
         return sum;
     }
 
     public void addTrain(Edge edge) throws IllegalArgumentException {
         int numberOfTrains = getNumberOfTrains();
-        if ((numberOfTrains + edge.getWeight()) > Player.TOTAL_NUMBER_OF_TRAINS) {
+        if ((numberOfTrains + edge.getLength()) > Player.TOTAL_NUMBER_OF_TRAINS) {
             Log.i("Add train", "The Player doesn't have enough trains");
             throw new IllegalArgumentException("Not enough trains. Player has only " + (Player.TOTAL_NUMBER_OF_TRAINS - getNumberOfTrains()) + " remaining trains.");
         } else {

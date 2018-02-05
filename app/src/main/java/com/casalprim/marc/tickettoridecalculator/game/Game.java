@@ -47,10 +47,10 @@ public class Game implements Serializable {
     private ArrayList<RouteCard> routeCards;
     private GameMap gameMap;
 
-    public Game(InputStream mapInputStream, InputStream routeCardsInputStream) {
+    public Game(InputStream mapInputStream, InputStream routeCardsInputStream, int mapBgImageId) {
         this.players = new HashMap<>();
         this.routeCards = generateRouteCards(routeCardsInputStream);
-        this.gameMap = new GameMap(mapInputStream);
+        this.gameMap = new GameMap(mapInputStream, mapBgImageId);
     }
 
     public GameMap getGameMap() {

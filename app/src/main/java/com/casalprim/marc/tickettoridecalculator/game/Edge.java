@@ -13,17 +13,17 @@ import static com.casalprim.marc.tickettoridecalculator.game.Game.PLAYER_COLOR_M
 
 public class Edge implements Serializable {
     private City city1, city2;
-    private int weight;
+    private int length;
     private int color;
     private int color2;
     private int width; //maximum number of occupants
     private ArrayList<Player> occupants;
     private boolean inLongPath;
 
-    public Edge(City destination, City origin, int weight, int color) {
+    public Edge(City destination, City origin, int length, int color) {
         this.city1 = destination;
         this.city2 = origin;
-        this.weight = weight;
+        this.length = length;
         this.color = color;
         this.color2 = color;
         this.width = 1;
@@ -53,12 +53,12 @@ public class Edge implements Serializable {
         this.city2 = city2;
     }
 
-    public int getWeight() {
-        return weight;
+    public int getLength() {
+        return length;
     }
 
-    public void setWeight(int weight) {
-        this.weight = weight;
+    public void setLength(int length) {
+        this.length = length;
     }
 
     public int getColor() {

@@ -26,6 +26,7 @@ import com.casalprim.marc.tickettoridecalculator.ui.GameEditionByFragmentListene
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
 
 import static com.casalprim.marc.tickettoridecalculator.game.Player.SCORE_TABLE;
 
@@ -112,8 +113,8 @@ public class ScoreBoardFragment extends Fragment {
             if (player.hasLongestPath()) {
                 longestPathScore = 10;
             }
-            addNewRow(table, "Longest Path", longestPathScore, bgColor, txtColor);
-            addNewRow(table, "Stations", player.getUnusedStations() * 4, bgColor, txtColor);
+            addNewRow(table, getString(R.string.longest_path), longestPathScore, bgColor, txtColor);
+            addNewRow(table, getString(R.string.stations), player.getUnusedStations() * 4, bgColor, txtColor);
 
 
             addInfoCards(table, player.getRoutes(), bgColor, bgLtColor, txtColor);
@@ -133,8 +134,8 @@ public class ScoreBoardFragment extends Fragment {
             totalValueText.setBackgroundColor(bgColor);
             totalNameText.setTypeface(null, Typeface.BOLD);
             totalValueText.setTypeface(null, Typeface.BOLD);
-            totalNameText.setText("Total");
-            totalValueText.setText(String.format("%d", player.getScore()));
+            totalNameText.setText(R.string.total);
+            totalValueText.setText(String.format(Locale.US, "%d", player.getScore()));
             totalNameText.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20);
             totalValueText.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20);
 
@@ -156,12 +157,12 @@ public class ScoreBoardFragment extends Fragment {
         for (int trainLength : trainsDistribution.keySet()) {
             score += SCORE_TABLE.get(trainLength) * trainsDistribution.get(trainLength);
         }
-        addNewRow(scoreTable, "Trains", score, bgColor, txtColor);
+        addNewRow(scoreTable, getString(R.string.trains), score, bgColor, txtColor);
 
         for (int trainLength : trainsDistribution.keySet()) {
             int number = trainsDistribution.get(trainLength);
             score = SCORE_TABLE.get(trainLength) * number;
-            addNewRowIndented(scoreTable, String.format("%dTx%d", trainLength, number), score, bgLtColor, txtColor);
+            addNewRowIndented(scoreTable, String.format(Locale.US, "%dTx%d", trainLength, number), score, bgLtColor, txtColor);
         }
     }
 
@@ -173,7 +174,7 @@ public class ScoreBoardFragment extends Fragment {
             else
                 score -= card.getPoints();
         }
-        addNewRow(scoreTable, "Tickets", score, bgColor, txtColor);
+        addNewRow(scoreTable, getString(R.string.tickets), score, bgColor, txtColor);
 
         for (RouteCard card : routes) {
             if (card.isCompleted())
@@ -192,7 +193,7 @@ public class ScoreBoardFragment extends Fragment {
         nameText.setTextColor(txtColor);
         valueText.setTextColor(txtColor);
         nameText.setText("\t" + name);
-        valueText.setText(String.format("%d", value));
+        valueText.setText(String.format(Locale.US, "%d", value));
         valueText.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_END);
         tableRow.addView(nameText);
         tableRow.addView(valueText);
@@ -209,7 +210,7 @@ public class ScoreBoardFragment extends Fragment {
         nameText.setTypeface(null, Typeface.BOLD);
         valueText.setTypeface(null, Typeface.BOLD);
         nameText.setText(name);
-        valueText.setText(String.format("%d", value));
+        valueText.setText(String.format(Locale.US, "%d", value));
         valueText.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_END);
         nameText.setPadding(0, 0, 20, 0);
         tableRow.addView(nameText);

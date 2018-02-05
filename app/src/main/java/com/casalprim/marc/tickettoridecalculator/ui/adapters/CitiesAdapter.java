@@ -2,6 +2,7 @@ package com.casalprim.marc.tickettoridecalculator.ui.adapters;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -63,12 +64,14 @@ public class CitiesAdapter extends BaseAdapter {
             //textview.setScaleType(ImageView.ScaleType.CENTER_CROP);
             //textview.setPadding(8, 8, 8, 8);
             textview.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+            textview.setGravity(Gravity.CENTER);
             textview.setBackgroundColor(backgroundTextColor);
             textview.setTextColor(textColor);
         } else {
             textview = (TextView) convertView;
         }
         textview.setText(cities.get(i));
+        textview.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
         return textview;
     }
 }

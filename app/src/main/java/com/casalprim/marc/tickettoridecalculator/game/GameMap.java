@@ -19,10 +19,12 @@ import java.util.List;
 public class GameMap implements Serializable {
     private ArrayList<City> cities;
     private ArrayList<Edge> edges;
+    private int backgroundImage;
 
-    public GameMap(InputStream file) {
+    public GameMap(InputStream file, int bgImageId) {
         this.cities = parseMap(file);
         this.edges = retrieveEdges();
+        this.backgroundImage = bgImageId;
     }
 
     public ArrayList<City> parseMap(InputStream stream) {
@@ -65,11 +67,11 @@ public class GameMap implements Serializable {
                         } else if (name.equalsIgnoreCase("edge")) {
                             String city1 = parser.getAttributeValue(null, "from");
                             String city2 = parser.getAttributeValue(null, "to");
-                            String weight = parser.getAttributeValue(null, "length");
+                            String length = parser.getAttributeValue(null, "length");
                             String color = parser.getAttributeValue(null, "color");
                             String color2 = parser.getAttributeValue(null, "color2");
                             //Log.i("New edge", "From " + city1 + ", To: " + city2 + ", Weight: " + weight + ", Color: " + color);
-                            this.addEdge(list, city1, city2, weight, color, color2);
+                            this.addEdge(list, city1, city2, length, color, color2);
                         }
                         break;
                     case XmlPullParser.END_TAG:
@@ -97,7 +99,7 @@ public class GameMap implements Serializable {
 
     }
 
-    private void addEdge(List<City> list, String city1name, String city2name, String weightString, String colorString, String color2) {
+    private void addEdge(List<City> list, String city1name, String city2name, String lengthString, String colorString, String color2) {
         City city1 = null;
         City city2 = null;
         for (City city : list) {
@@ -109,13 +111,13 @@ public class GameMap implements Serializable {
             if (city2 != null && city1 != null)
                 break;
         }
-        int weight = Integer.parseInt(weightString);
+        int length = Integer.parseInt(lengthString);
         if (colorString.equalsIgnoreCase("orange"))
             colorString = "#FF7D3D";
         if (color2 != null && color2.equalsIgnoreCase("orange"))
             color2 = "#FF7D3D";
         int color = Color.parseColor(colorString);
-        Edge edge = new Edge(city1, city2, weight, color);
+        Edge edge = new Edge(city1, city2, length, color);
 
         if (color2 != null) {
             edge.setWidth(2);
@@ -153,5 +155,10 @@ public class GameMap implements Serializable {
             }
         }
         return edges;
+    }
+
+    public int getBackgroundImageId() {
+
+        return this.backgroundImage;
     }
 }

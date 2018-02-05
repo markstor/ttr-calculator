@@ -46,6 +46,10 @@ public class Player implements Serializable {
         return unusedStations;
     }
 
+    public void setUnusedStations(int unusedStations) {
+        this.unusedStations = unusedStations;
+    }
+
     public String getName() {
         if (name == null) {
             return this.getColor().name();
@@ -144,7 +148,7 @@ public class Player implements Serializable {
 
     public void addTrain(Edge edge) {
         if (edge != null) {
-            //Log.d("addTrain",city1.getName()+" to "+city2.getName()+" length:"+edge.getWeight());
+            //Log.d("addTrain",city1.getName()+" to "+city2.getName()+" length:"+edge.getLength());
             if (edge.canAdd(this)) {
                 this.trains.addTrain(edge);
                 edge.addOccupant(this);
@@ -167,7 +171,7 @@ public class Player implements Serializable {
 
     public void removeTrain(Edge edge) {
         if (edge != null) {
-            //Log.d("removeTrain",city1.getName()+" to "+city2.getName()+" length:"+edge.getWeight());
+            //Log.d("removeTrain",city1.getName()+" to "+city2.getName()+" length:"+edge.getLength());
             this.trains.removeTrain(edge);
             edge.removeOccupant(this);
             this.computeLongestPath();

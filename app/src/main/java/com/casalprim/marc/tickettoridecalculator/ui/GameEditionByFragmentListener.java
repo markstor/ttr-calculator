@@ -12,6 +12,8 @@ public interface GameEditionByFragmentListener {
 
     void onPlayerAdded(Player.PlayerColor color);
 
+    void onPlayerNameChanged(Player.PlayerColor color, String newName);
+
     void onPlayerRemoved(Player.PlayerColor color);
 
     void onRouteCardAssigned(Player.PlayerColor color, RouteCard card);
