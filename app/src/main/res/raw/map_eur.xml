@@ -1,646 +1,139 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map>
-    <city
-        name="Barcelona"
-        x="165"
-        y="509" />
-    <city
-        name="Lisboa"
-        x="18"
-        y="518" />
-    <city
-        name="Cadiz"
-        x="73"
-        y="561" />
-    <city
-        name="Madrid"
-        x="74"
-        y="500" />
-    <city
-        name="Pamplona"
-        x="155"
-        y="432" />
-    <city
-        name="Paris"
-        x="208"
-        y="306" />
-    <city
-        name="Petrograd"
-        x="704"
-        y="76" />
-    <city
-        name="Berlin"
-        x="404"
-        y="219" />
-    <city
-        name="Marseille"
-        x="278"
-        y="428" />
-    <city
-        name="Brest"
-        x="92"
-        y="292" />
-    <city
-        name="Dieppe"
-        x="165"
-        y="268" />
-    <city
-        name="London"
-        x="174"
-        y="194" />
-    <city
-        name="Edinburgh"
-        x="120"
-        y="71" />
-    <city
-        name="Bruxelles"
-        x="236"
-        y="237" />
-    <city
-        name="Zürich"
-        x="300"
-        y="352" />
-    <city
-        name="Frankfurt"
-        x="309"
-        y="263" />
-    <city
-        name="München"
-        x="356"
-        y="299" />
-    <city
-        name="Amsterdam"
-        x="254"
-        y="196" />
-    <city
-        name="Venezia"
-        x="371"
-        y="379" />
-    <city
-        name="Roma"
-        x="376"
-        y="451" />
-    <city
-        name="Palermo"
-        x="407"
-        y="561" />
-    <city
-        name="Brindisi"
-        x="445"
-        y="472" />
-    <city
-        name="Athina"
-        x="549"
-        y="536" />
-    <city
-        name="Smyrna"
-        x="620"
-        y="559" />
-    <city
-        name="Angora"
-        x="719"
-        y="536" />
-    <city
-        name="Constantinople"
-        x="657"
-        y="493" />
-    <city
-        name="Erzurum"
-        x="786"
-        y="516" />
-    <city
-        name="Sochi"
-        x="800"
-        y="416" />
-    <city
-        name="Sevastopol"
-        x="727"
-        y="402" />
-    <city
-        name="Rostov"
-        x="807"
-        y="341" />
-    <city
-        name="Sofia"
-        x="565"
-        y="442" />
-    <city
-        name="Sarajevo"
-        x="510"
-        y="437" />
-    <city
-        name="Zagrab"
-        x="440"
-        y="388" />
-    <city
-        name="Bucuresti"
-        x="615"
-        y="390" />
-    <city
-        name="Budapest"
-        x="490"
-        y="333" />
-    <city
-        name="Wien"
-        x="450"
-        y="313" />
-    <city
-        name="Essen"
-        x="320"
-        y="206" />
-    <city
-        name="Kobenhavn"
-        x="379"
-        y="117" />
-    <city
-        name="Stockholm"
-        x="464"
-        y="52" />
-    <city
-        name="Danzig"
-        x="497"
-        y="152" />
-    <city
-        name="Warszawa"
-        x="536"
-        y="208" />
-    <city
-        name="Wilno"
-        x="629"
-        y="188" />
-    <city
-        name="Riga"
-        x="564"
-        y="77" />
-    <city
-        name="Kyiv"
-        x="662"
-        y="254" />
-    <city
-        name="Kharkov"
-        x="772"
-        y="298" />
-    <city
-        name="Smolensk"
-        x="714"
-        y="193" />
-    <city
-        name="Moskva"
-        x="784"
-        y="172" />
-    <edge
-        color="yellow"
-        from="Madrid"
-        length="2"
-        to="Barcelona" />
-    <edge
-        color="magenta"
-        from="Madrid"
-        length="3"
-        to="Lisboa" />
-    <edge
-        color="blue"
-        from="Cadiz"
-        length="2"
-        to="Lisboa" />
-    <edge
-        color="orange"
-        from="Cadiz"
-        length="3"
-        to="Madrid" />
-    <edge
-        color="gray"
-        from="Barcelona"
-        length="2"
-        to="Pamplona" />
-    <edge
-        color="black"
-        color2="white"
-        from="Madrid"
-        length="3"
-        to="Pamplona" />
-    <edge
-        color="gray"
-        from="Barcelona"
-        length="4"
-        to="Marseille" />
-    <edge
-        color="red"
-        from="Pamplona"
-        length="4"
-        to="Marseille" />
-    <edge
-        color="gray"
-        from="Pamplona"
-        length="4"
-        to="Brest" />
-    <edge
-        color="blue"
-        color2="green"
-        from="Pamplona"
-        length="4"
-        to="Paris" />
-    <edge
-        color="orange"
-        from="Brest"
-        length="2"
-        to="Dieppe" />
-    <edge
-        color="black"
-        from="Brest"
-        length="3"
-        to="Paris" />
-    <edge
-        color="magenta"
-        from="Dieppe"
-        length="1"
-        to="Paris" />
-    <edge
-        color="green"
-        from="Dieppe"
-        length="2"
-        to="Bruxelles" />
-    <edge
-        color="gray"
-        from="London"
-        length="2"
-        to="Dieppe" />
-    <edge
-        color="orange"
-        color2="black"
-        from="London"
-        length="4"
-        to="Edinburgh" />
-    <edge
-        color="gray"
-        from="London"
-        length="2"
-        to="Amsterdam" />
-    <edge
-        color="black"
-        from="Bruxelles"
-        length="1"
-        to="Amsterdam" />
-    <edge
-        color="red"
-        color2="yellow"
-        from="Bruxelles"
-        length="2"
-        to="Paris" />
-    <edge
-        color="blue"
-        from="Bruxelles"
-        length="2"
-        to="Frankfurt" />
-    <edge
-        color="white"
-        color2="orange"
-        from="Paris"
-        length="3"
-        to="Frankfurt" />
-    <edge
-        color="gray"
-        from="Paris"
-        length="3"
-        to="Zürich" />
-    <edge
-        color="gray"
-        from="Paris"
-        length="4"
-        to="Marseille" />
-    <edge
-        color="magenta"
-        from="Zürich"
-        length="2"
-        to="Marseille" />
-    <edge
-        color="green"
-        from="Zürich"
-        length="2"
-        to="Venezia" />
-    <edge
-        color="gray"
-        from="Roma"
-        length="4"
-        to="Marseille" />
-    <edge
-        color="yellow"
-        from="Essen"
-        length="3"
-        to="Amsterdam" />
-    <edge
-        color="white"
-        from="Frankfurt"
-        length="2"
-        to="Amsterdam" />
-    <edge
-        color="green"
-        from="Frankfurt"
-        length="2"
-        to="Essen" />
-    <edge
-        color="magenta"
-        from="Frankfurt"
-        length="2"
-        to="München" />
-    <edge
-        color="black"
-        color2="red"
-        from="Frankfurt"
-        length="3"
-        to="Berlin" />
-    <edge
-        color="yellow"
-        from="Zürich"
-        length="2"
-        to="München" />
-    <edge
-        color="blue"
-        from="Venezia"
-        length="2"
-        to="München" />
-    <edge
-        color="orange"
-        from="Wien"
-        length="3"
-        to="München" />
-    <edge
-        color="gray"
-        color2="gray"
-        from="Essen"
-        length="3"
-        to="Kobenhavn" />
-    <edge
-        color="blue"
-        from="Essen"
-        length="2"
-        to="Berlin" />
-    <edge
-        color="green"
-        from="Wien"
-        length="3"
-        to="Berlin" />
-    <edge
-        color="gray"
-        from="Danzig"
-        length="4"
-        to="Berlin" />
-    <edge
-        color="magenta"
-        color2="yellow"
-        from="Warszawa"
-        length="4"
-        to="Berlin" />
-    <edge
-        color="magenta"
-        from="Warszawa"
-        length="2"
-        to="Danzig" />
-    <edge
-        color="white"
-        color2="yellow"
-        from="Kobenhavn"
-        length="3"
-        to="Stockholm" />
-    <edge
-        color="gray"
-        from="Petrograd"
-        length="8"
-        to="Stockholm" />
-    <edge
-        color="red"
-        color2="white"
-        from="Wien"
-        length="1"
-        to="Budapest" />
-    <edge
-        color="blue"
-        from="Wien"
-        length="4"
-        to="Warszawa" />
-    <edge
-        color="black"
-        from="Danzig"
-        length="3"
-        to="Riga" />
-    <edge
-        color="black"
-        from="Venezia"
-        length="2"
-        to="Roma" />
-    <edge
-        color="gray"
-        from="Venezia"
-        length="2"
-        to="Zagrab" />
-    <edge
-        color="gray"
-        from="Wien"
-        length="2"
-        to="Zagrab" />
-    <edge
-        color="orange"
-        from="Budapest"
-        length="2"
-        to="Zagrab" />
-    <edge
-        color="magenta"
-        from="Budapest"
-        length="3"
-        to="Sarajevo" />
-    <edge
-        color="red"
-        from="Zagrab"
-        length="3"
-        to="Sarajevo" />
-    <edge
-        color="white"
-        from="Roma"
-        length="2"
-        to="Brindisi" />
-    <edge
-        color="gray"
-        from="Roma"
-        length="4"
-        to="Palermo" />
-    <edge
-        color="gray"
-        from="Brindisi"
-        length="3"
-        to="Palermo" />
-    <edge
-        color="gray"
-        from="Brindisi"
-        length="4"
-        to="Athina" />
-    <edge
-        color="gray"
-        from="Smyrna"
-        length="6"
-        to="Palermo" />
-    <edge
-        color="gray"
-        from="Smyrna"
-        length="2"
-        to="Athina" />
-    <edge
-        color="gray"
-        from="Smyrna"
-        length="2"
-        to="Constantinople" />
-    <edge
-        color="orange"
-        from="Smyrna"
-        length="3"
-        to="Angora" />
-    <edge
-        color="green"
-        from="Sarajevo"
-        length="4"
-        to="Athina" />
-    <edge
-        color="gray"
-        from="Sarajevo"
-        length="2"
-        to="Sofia" />
-    <edge
-        color="magenta"
-        from="Athina"
-        length="3"
-        to="Sofia" />
-    <edge
-        color="gray"
-        from="Bucuresti"
-        length="2"
-        to="Sofia" />
-    <edge
-        color="blue"
-        from="Constantinople"
-        length="3"
-        to="Sofia" />
-    <edge
-        color="gray"
-        from="Constantinople"
-        length="4"
-        to="Sevastopol" />
-    <edge
-        color="gray"
-        from="Constantinople"
-        length="2"
-        to="Angora" />
-    <edge
-        color="yellow"
-        from="Constantinople"
-        length="3"
-        to="Bucuresti" />
-    <edge
-        color="white"
-        from="Sevastopol"
-        length="4"
-        to="Bucuresti" />
-    <edge
-        color="gray"
-        from="Budapest"
-        length="4"
-        to="Bucuresti" />
-    <edge
-        color="black"
-        from="Angora"
-        length="3"
-        to="Erzurum" />
-    <edge
-        color="gray"
-        from="Sevastopol"
-        length="4"
-        to="Erzurum" />
-    <edge
-        color="red"
-        from="Sochi"
-        length="3"
-        to="Erzurum" />
-    <edge
-        color="gray"
-        from="Sochi"
-        length="2"
-        to="Sevastopol" />
-    <edge
-        color="gray"
-        from="Sochi"
-        length="2"
-        to="Rostov" />
-    <edge
-        color="gray"
-        from="Sevastopol"
-        length="4"
-        to="Rostov" />
-    <edge
-        color="green"
-        from="Kharkov"
-        length="2"
-        to="Rostov" />
-    <edge
-        color="gray"
-        from="Kharkov"
-        length="4"
-        to="Moskva" />
-    <edge
-        color="gray"
-        from="Kharkov"
-        length="4"
-        to="Kyiv" />
-    <edge
-        color="gray"
-        from="Wilno"
-        length="2"
-        to="Kyiv" />
-    <edge
-        color="gray"
-        from="Warszawa"
-        length="4"
-        to="Kyiv" />
-    <edge
-        color="gray"
-        from="Budapest"
-        length="6"
-        to="Kyiv" />
-    <edge
-        color="gray"
-        from="Bucuresti"
-        length="4"
-        to="Kyiv" />
-    <edge
-        color="red"
-        from="Smolensk"
-        length="3"
-        to="Kyiv" />
-    <edge
-        color="yellow"
-        from="Smolensk"
-        length="3"
-        to="Wilno" />
-    <edge
-        color="orange"
-        from="Smolensk"
-        length="2"
-        to="Moskva" />
-    <edge
-        color="white"
-        from="Petrograd"
-        length="4"
-        to="Moskva" />
-    <edge
-        color="gray"
-        from="Petrograd"
-        length="4"
-        to="Riga" />
-    <edge
-        color="blue"
-        from="Petrograd"
-        length="4"
-        to="Wilno" />
-    <edge
-        color="green"
-        from="Riga"
-        length="4"
-        to="Wilno" />
+    <city name="Barcelona" x="165" y="509" />
+    <city name="Lisboa" x="18" y="518" />
+    <city name="Cadiz" x="73" y="561" />
+    <city name="Madrid" x="74" y="500" />
+    <city name="Pamplona" x="155" y="432" />
+    <city name="Paris" x="208" y="306" />
+    <city name="Petrograd" x="704" y="76" />
+    <city name="Berlin" x="404" y="219" />
+    <city name="Marseille" x="278" y="428" />
+    <city name="Brest" x="92" y="292" />
+    <city name="Dieppe" x="165" y="268" />
+    <city name="London" x="174" y="194" />
+    <city name="Edinburgh" x="120" y="71" />
+    <city name="Bruxelles" x="236" y="237" />
+    <city name="Zürich" x="300" y="352" />
+    <city name="Frankfurt" x="309" y="263" />
+    <city name="München" x="356" y="299" />
+    <city name="Amsterdam" x="254" y="196" />
+    <city name="Venezia" x="371" y="379" />
+    <city name="Roma" x="376" y="451" />
+    <city name="Palermo" x="407" y="561" />
+    <city name="Brindisi" x="445" y="472" />
+    <city name="Athina" x="549" y="536" />
+    <city name="Smyrna" x="620" y="559" />
+    <city name="Angora" x="719" y="536" />
+    <city name="Constantinople" x="657" y="493" />
+    <city name="Erzurum" x="786" y="516" />
+    <city name="Sochi" x="800" y="416" />
+    <city name="Sevastopol" x="727" y="402" />
+    <city name="Rostov" x="807" y="341" />
+    <city name="Sofia" x="565" y="442" />
+    <city name="Sarajevo" x="510" y="437" />
+    <city name="Zagrab" x="440" y="388" />
+    <city name="Bucuresti" x="615" y="390" />
+    <city name="Budapest" x="490" y="333" />
+    <city name="Wien" x="450" y="313" />
+    <city name="Essen" x="320" y="206" />
+    <city name="Kobenhavn" x="379" y="117" />
+    <city name="Stockholm" x="464" y="52" />
+    <city name="Danzig" x="497" y="152" />
+    <city name="Warszawa" x="536" y="208" />
+    <city name="Wilno" x="629" y="188" />
+    <city name="Riga" x="564" y="77" />
+    <city name="Kyiv" x="662" y="254" />
+    <city name="Kharkov" x="772" y="298" />
+    <city name="Smolensk" x="714" y="193" />
+    <city name="Moskva" x="784" y="172" />
+    <edge color="yellow" from="Madrid" length="2" to="Barcelona" />
+    <edge color="magenta" from="Madrid" length="3" to="Lisboa" />
+    <edge color="blue" from="Cadiz" length="2" to="Lisboa" />
+    <edge color="orange" from="Cadiz" length="3" to="Madrid" />
+    <edge color="gray" from="Barcelona" length="2" to="Pamplona" />
+    <edge color="black" color2="white" from="Madrid" length="3" to="Pamplona" />
+    <edge color="gray" from="Barcelona" length="4" to="Marseille" />
+    <edge color="red" from="Pamplona" length="4" to="Marseille" />
+    <edge color="gray" from="Pamplona" length="4" to="Brest" />
+    <edge color="blue" color2="green" from="Pamplona" length="4" to="Paris" />
+    <edge color="orange" from="Brest" length="2" to="Dieppe" />
+    <edge color="black" from="Brest" length="3" to="Paris" />
+    <edge color="magenta" from="Dieppe" length="1" to="Paris" />
+    <edge color="green" from="Dieppe" length="2" to="Bruxelles" />
+    <edge color="gray" from="London" length="2" to="Dieppe" />
+    <edge color="orange" color2="black" from="London" length="4" to="Edinburgh" />
+    <edge color="gray" from="London" length="2" to="Amsterdam" />
+    <edge color="black" from="Bruxelles" length="1" to="Amsterdam" />
+    <edge color="red" color2="yellow" from="Bruxelles" length="2" to="Paris" />
+    <edge color="blue" from="Bruxelles" length="2" to="Frankfurt" />
+    <edge color="white" color2="orange" from="Paris" length="3" to="Frankfurt" />
+    <edge color="gray" from="Paris" length="3" to="Zürich" />
+    <edge color="gray" from="Paris" length="4" to="Marseille" />
+    <edge color="magenta" from="Zürich" length="2" to="Marseille" />
+    <edge color="green" from="Zürich" length="2" to="Venezia" />
+    <edge color="gray" from="Roma" length="4" to="Marseille" />
+    <edge color="yellow" from="Essen" length="3" to="Amsterdam" />
+    <edge color="white" from="Frankfurt" length="2" to="Amsterdam" />
+    <edge color="green" from="Frankfurt" length="2" to="Essen" />
+    <edge color="magenta" from="Frankfurt" length="2" to="München" />
+    <edge color="black" color2="red" from="Frankfurt" length="3" to="Berlin" />
+    <edge color="yellow" from="Zürich" length="2" to="München" />
+    <edge color="blue" from="Venezia" length="2" to="München" />
+    <edge color="orange" from="Wien" length="3" to="München" />
+    <edge color="gray" color2="gray" from="Essen" length="3" to="Kobenhavn" />
+    <edge color="blue" from="Essen" length="2" to="Berlin" />
+    <edge color="green" from="Wien" length="3" to="Berlin" />
+    <edge color="gray" from="Danzig" length="4" to="Berlin" />
+    <edge color="magenta" color2="yellow" from="Warszawa" length="4" to="Berlin" />
+    <edge color="magenta" from="Warszawa" length="2" to="Danzig" />
+    <edge color="white" color2="yellow" from="Kobenhavn" length="3" to="Stockholm" />
+    <edge color="gray" from="Petrograd" length="8" to="Stockholm" />
+    <edge color="red" color2="white" from="Wien" length="1" to="Budapest" />
+    <edge color="blue" from="Wien" length="4" to="Warszawa" />
+    <edge color="black" from="Danzig" length="3" to="Riga" />
+    <edge color="black" from="Venezia" length="2" to="Roma" />
+    <edge color="gray" from="Venezia" length="2" to="Zagrab" />
+    <edge color="gray" from="Wien" length="2" to="Zagrab" />
+    <edge color="orange" from="Budapest" length="2" to="Zagrab" />
+    <edge color="magenta" from="Budapest" length="3" to="Sarajevo" />
+    <edge color="red" from="Zagrab" length="3" to="Sarajevo" />
+    <edge color="white" from="Roma" length="2" to="Brindisi" />
+    <edge color="gray" from="Roma" length="4" to="Palermo" />
+    <edge color="gray" from="Brindisi" length="3" to="Palermo" />
+    <edge color="gray" from="Brindisi" length="4" to="Athina" />
+    <edge color="gray" from="Smyrna" length="6" to="Palermo" />
+    <edge color="gray" from="Smyrna" length="2" to="Athina" />
+    <edge color="gray" from="Smyrna" length="2" to="Constantinople" />
+    <edge color="orange" from="Smyrna" length="3" to="Angora" />
+    <edge color="green" from="Sarajevo" length="4" to="Athina" />
+    <edge color="gray" from="Sarajevo" length="2" to="Sofia" />
+    <edge color="magenta" from="Athina" length="3" to="Sofia" />
+    <edge color="gray" from="Bucuresti" length="2" to="Sofia" />
+    <edge color="blue" from="Constantinople" length="3" to="Sofia" />
+    <edge color="gray" from="Constantinople" length="4" to="Sevastopol" />
+    <edge color="gray" from="Constantinople" length="2" to="Angora" />
+    <edge color="yellow" from="Constantinople" length="3" to="Bucuresti" />
+    <edge color="white" from="Sevastopol" length="4" to="Bucuresti" />
+    <edge color="gray" from="Budapest" length="4" to="Bucuresti" />
+    <edge color="black" from="Angora" length="3" to="Erzurum" />
+    <edge color="gray" from="Sevastopol" length="4" to="Erzurum" />
+    <edge color="red" from="Sochi" length="3" to="Erzurum" />
+    <edge color="gray" from="Sochi" length="2" to="Sevastopol" />
+    <edge color="gray" from="Sochi" length="2" to="Rostov" />
+    <edge color="gray" from="Sevastopol" length="4" to="Rostov" />
+    <edge color="green" from="Kharkov" length="2" to="Rostov" />
+    <edge color="gray" from="Kharkov" length="4" to="Moskva" />
+    <edge color="gray" from="Kharkov" length="4" to="Kyiv" />
+    <edge color="gray" from="Wilno" length="2" to="Kyiv" />
+    <edge color="gray" from="Warszawa" length="4" to="Kyiv" />
+    <edge color="gray" from="Budapest" length="6" to="Kyiv" />
+    <edge color="gray" from="Bucuresti" length="4" to="Kyiv" />
+    <edge color="red" from="Smolensk" length="3" to="Kyiv" />
+    <edge color="yellow" from="Smolensk" length="3" to="Wilno" />
+    <edge color="orange" from="Smolensk" length="2" to="Moskva" />
+    <edge color="white" from="Petrograd" length="4" to="Moskva" />
+    <edge color="gray" from="Petrograd" length="4" to="Riga" />
+    <edge color="blue" from="Petrograd" length="4" to="Wilno" />
+    <edge color="green" from="Riga" length="4" to="Wilno" />
 </map>
