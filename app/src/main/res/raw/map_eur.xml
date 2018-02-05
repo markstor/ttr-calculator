@@ -188,7 +188,6 @@
         name="Moskva"
         x="784"
         y="172" />
-
     <edge
         color="yellow"
         from="Madrid"
@@ -644,6 +643,4 @@
         from="Riga"
         length="4"
         to="Wilno" />
-
-
 </map>
