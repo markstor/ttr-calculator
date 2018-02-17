@@ -1,14 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <routecards>
-    <card
-        from="Madrid"
-        points="10"
-        to="Petrograd" />
-    <card
-        from="Madrid"
-        points="10"
-        to="Berlin" />
-    <card
-        from="Barcelona"
-        points="9"
-        to="Danzig" />
+    <card from="Kobenhavn" to="Erzurum" points="21"/>
+    <card from="Cadiz" to="Stockholm" points="21"/>
+    <card from="Brest" to="Petrograd" points="20"/>
+    <card from="Edinburgh" to="Athina" points="21"/>
+    <card from="Lisboa" points="20" to="Danzig" />
+    <card from="Palermo" to="Moskva" points="20"/>
+    <card from="Sarajevo" to="Sevastopol" points="8"/>
+    <card from="Madrid" to="Dieppe" points="8"/>
+    <card from="Zürich" to="Budapest" points="6"/>
+    <card from="Rostov" to="Erzurum" points="5"/>
+    <card from="Frankfurt" to="Smolensk" points="13"/>
+    <card from="Warszaw" to="Smolensk" points="8"/>
+    <card from="Bruxelles" to="Danzig" points="9"/>
+    <card from="Berlin" to="Roma" points="9"/>
+    <card from="Roma" to="Smyrna" points="8"/>
+    <card from="Angora" to="Kharkov" points="10"/>
+    <card from="Athina" to="Angora" points="5"/>
+    <card from="Amsterdam" to="Wilno" points="12"/>
+    <card from="Frankfurt" to="Kobenhavn" points="5"/>
+    <card from="Essen" to="Kyiv" points="10"/>
+    <card from="Kyiv" to="Sochi" points="8"/>
+    <card from="Paris" to="Zagrab" points="7"/>
+    <card from="Brest" to="Venezia" points="8"/>
+    <card from="Athina" to="Wilno" points="11"/>
+    <card from="Kyiv" to="Petrograd" points="6"/>
+    <card from="Palermo" to="Constantinople" points="8"/>
+    <card from="Smolensk" to="Rostov" points="8"/>
+    <card from="London" to="Berlin" points="7"/>
+    <card from="Madrid" to="Zürich" points="8"/>
+    <card from="Edinburgh" to="Paris" points="7"/>
+    <card from="Paris" to="Wien" points="8"/>
+    <card from="Marseille" to="Essen" points="8"/>
+    <card from="Amsterdam" to="Pamplona" points="7"/>
+    <card from="Berlin" to="Bucuresti" points="8"/>
+    <card from="London" to="Wien" points="10"/>
+    <card from="Venizia" to="Constantinople" points="10"/>
+    <card from="Barcelona" to="Bruxelles" points="8"/>
+    <card from="Zagrab" to="Brindisi" points="6"/>
+    <card from="Zürich" to="Brindisi" points="6"/>
+    <card from="Stockholm" to="Wien" points="11"/>
+    <card from="Riga" to="Bucuresti" points="10"/>
+    <card from="Brest" to="Marseille" points="7"/>
+    <card from="Budapest" to="Sofia" points="5"/>
+    <card from="Berlin" to="Moskva" points="12"/>
+    <card from="Barcelona" to="München" points="8"/>
+
 </routecards>

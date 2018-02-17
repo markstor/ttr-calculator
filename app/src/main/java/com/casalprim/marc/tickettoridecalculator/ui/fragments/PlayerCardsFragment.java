@@ -21,6 +21,7 @@ import com.casalprim.marc.tickettoridecalculator.ui.adapters.CardsAdapter;
 import com.casalprim.marc.tickettoridecalculator.ui.adapters.CitiesAdapter;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * Created by marc on 17/01/18.
@@ -117,6 +118,18 @@ public class PlayerCardsFragment extends Fragment {
             }
         });
 
+        cardsGridview.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                RouteCard clickedCard = (RouteCard) cardsAdapter.getItem(position);
+                clickedCard.setCompleted(!clickedCard.getCompleted());
+                getView().invalidate();
+                getView().requestLayout();
+                return true;
+            }
+        });
+
+
         cancelFromCity = view.findViewById(R.id.cancelButton);
         cancelFromCity.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -160,6 +173,7 @@ public class PlayerCardsFragment extends Fragment {
                 cities.add(city);
             }
         }
+        Collections.sort(cities);
         return cities;
     }
 

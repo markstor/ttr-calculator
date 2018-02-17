@@ -92,6 +92,10 @@ public class RouteCard implements Serializable {
         this.completed = state;
     }
 
+    public boolean getCompleted(){
+        return this.completed;
+    }
+
     public boolean isOwned() {
         return owned;
     }
