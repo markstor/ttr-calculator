@@ -6,12 +6,14 @@ import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.NestedScrollView;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -74,22 +76,19 @@ public class ScoreBoardFragment extends Fragment {
     }
 
     private void buildTables(LinearLayout view) {
-        for (Player.PlayerColor pColor : playersInGame.keySet()) {
+
+        ArrayList<Player> players = new ArrayList<Player>(playersInGame.values());
+        Collections.sort(players);
+
+        for (Player player : players) {
+            Player.PlayerColor pColor = player.getColor();
             int bgColor = Game.PLAYER_COLOR_MAP.get(pColor);
             int bgLtColor = Color.argb(200, Color.red(bgColor), Color.green(bgColor), Color.blue(bgColor));
             int txtColor = Game.PLAYER_TEXT_COLOR_MAP.get(pColor);
 
             TableLayout table = new TableLayout(view.getContext());
-            view.addView(table);
-            LinearLayout.LayoutParams lParams = (LinearLayout.LayoutParams) table.getLayoutParams();
-            lParams.width = LayoutParams.WRAP_CONTENT;
-            lParams.height = LayoutParams.MATCH_PARENT;
-            lParams.weight = 1f;
-            //lParams.setMargins(20,20,20,20);
-            table.setLayoutParams(lParams);
-            table.setPadding(20, 20, 20, 20);
+
             table.setBackgroundColor(bgLtColor);
-            Player player = playersInGame.get(pColor);
             TableRow tableHeader = new TableRow(view.getContext());
             tableHeader.setBackgroundColor(bgColor);
             TextView headerText = new TextView(view.getContext());
@@ -150,13 +149,27 @@ public class ScoreBoardFragment extends Fragment {
             totalRow.addView(totalNameText);
             totalRow.addView(totalValueText);
             totalRow.setGravity(Gravity.BOTTOM);
-            //scoreTable.addView(totalRow);
 
-            //table.addView(scoreTable);
             table.addView(totalRow);
 
+            NestedScrollView nscroll = new NestedScrollView(view.getContext());
+            nscroll.setFillViewport(true);
+            nscroll.addView(table);
+            LayoutParams lParams = table.getLayoutParams();
+            lParams.width = LayoutParams.WRAP_CONTENT;
+            lParams.height = LayoutParams.MATCH_PARENT;
+            table.setLayoutParams(lParams);
+            table.setPadding(20, 20, 20, 20);
+
+            view.addView(nscroll);
+            LinearLayout.LayoutParams llParams = (LinearLayout.LayoutParams) nscroll.getLayoutParams();
+            llParams.width = LayoutParams.WRAP_CONTENT;
+            llParams.height = LayoutParams.MATCH_PARENT;
+            llParams.weight = 10f;
+            //lParams.setMargins(20,20,20,20);
 
         }
+
     }
 
     private void addInfoTrains(TableLayout scoreTable, TrainMap trainMap, int bgColor, int bgLtColor, int txtColor) {
@@ -172,7 +185,10 @@ public class ScoreBoardFragment extends Fragment {
         for (int trainLength : sortedKeys) {
             int number = trainsDistribution.get(trainLength);
             score = SCORE_TABLE.get(trainLength) * number;
-            addNewRowIndented(scoreTable, String.format(Locale.US, "%dTx%d", trainLength, number), score, bgLtColor, txtColor);
+            //String vago="T__T ";
+            //String format= new String(new char[trainLength]).replace("\0", vago)+"x%d";
+            //addNewRowIndented(scoreTable, String.format(Locale.US,format, number), score, bgLtColor, txtColor);
+            addTrainsRowIndented(scoreTable, R.drawable.ic_vago_filled, trainLength, number, score, bgLtColor, txtColor);
         }
     }
 
@@ -209,6 +225,53 @@ public class ScoreBoardFragment extends Fragment {
         tableRow.addView(valueText);
         scoreTableView.addView(tableRow);
     }
+
+    private void addTrainsRowIndented(TableLayout scoreTableView, int resId, int length, int number, int value, int bgColor, int txtColor) {
+        TableRow tableRow = new TableRow(scoreTableView.getContext());
+        //tableRow.setBackgroundColor(bgColor);
+        LinearLayout nameView = new LinearLayout(scoreTableView.getContext());
+
+        nameView.setOrientation(LinearLayout.HORIZONTAL);
+        nameView.setGravity(Gravity.CENTER_VERTICAL);
+        TextView nameText = new TextView(scoreTableView.getContext());
+        TextView valueText = new TextView(scoreTableView.getContext());
+        nameText.setTextColor(txtColor);
+        valueText.setTextColor(txtColor);
+        nameText.setText(String.format(Locale.US, " x %d", number));
+        valueText.setText(String.format(Locale.US, "%d", value));
+        valueText.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_END);
+        boolean first = true;
+        int vPad = 2; //vertical padding
+        int hPad = 2; //horizontal padding
+        for (int i = 0; i < length; i++) {
+            ImageView imageView = new ImageView(scoreTableView.getContext());
+//            if(i==length-1) //last item
+//                resId=R.drawable.ic_locomotora;
+            imageView.setImageResource(resId);
+            imageView.setColorFilter(txtColor);
+            if (first)
+                imageView.setPadding(20, vPad, 0, vPad);
+            else
+                imageView.setPadding(hPad, vPad, 0, vPad);
+            first = false;
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT, (int) nameText.getTextSize());
+            imageView.setAdjustViewBounds(true);
+            nameView.addView(imageView, layoutParams);
+
+        }
+        nameText.setGravity(Gravity.CENTER);
+        nameView.addView(nameText);
+        nameText.getLayoutParams().height = LinearLayout.LayoutParams.WRAP_CONTENT;
+        nameText.getLayoutParams().width = LinearLayout.LayoutParams.WRAP_CONTENT;
+
+        tableRow.addView(nameView);
+        nameView.getLayoutParams().width = LayoutParams.MATCH_PARENT;
+        //nameView.requestLayout();
+        tableRow.addView(valueText);
+        scoreTableView.addView(tableRow);
+    }
+
 
     private void addNewRow(TableLayout scoreTableView, String name, int value, int bgColor, int txtColor) {
         TableRow tableRow = new TableRow(scoreTableView.getContext());

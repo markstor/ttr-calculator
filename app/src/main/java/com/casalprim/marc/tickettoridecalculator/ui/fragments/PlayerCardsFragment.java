@@ -123,8 +123,7 @@ public class PlayerCardsFragment extends Fragment {
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 RouteCard clickedCard = (RouteCard) cardsAdapter.getItem(position);
                 clickedCard.setCompleted(!clickedCard.getCompleted());
-                getView().invalidate();
-                getView().requestLayout();
+                cardsAdapter.notifyDataSetInvalidated();
                 return true;
             }
         });
@@ -184,6 +183,7 @@ public class PlayerCardsFragment extends Fragment {
                 destinations.add(card.getTo());
             }
         }
+        Collections.sort(destinations);
         return destinations;
     }
 

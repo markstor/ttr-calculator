@@ -70,7 +70,8 @@ public class MapView extends View {
         //mScaleDetector = new ScaleGestureDetector();
         mCityCircleColor = Color.LTGRAY;
         spRadiusSize = 15;
-        radiusCities = spRadiusSize * getResources().getDisplayMetrics().scaledDensity;
+
+
         mTrackWidthFactor = 0.3f;
         mTrackInLongPathWidthFactor = 2f * mTrackWidthFactor;
 
@@ -87,18 +88,24 @@ public class MapView extends View {
 
         mCityHighlightedColor = Color.LTGRAY;
         mSelectionStrokeColor = Color.LTGRAY;
-        mSelectionStrokePaint.setStrokeWidth(mTrackWidthFactor * radiusCities);
-        mCityNamePaint.setTextSize(radiusCities);
+
         rotateCityCoordinates = true;
         drawableHeight = 1200;
         drawableWidth = 900;
         mapWidth = 800;
         mapHeight = 500;
 
+        changeRadiusCities(spRadiusSize * getResources().getDisplayMetrics().scaledDensity);
 
         //this.gameMap=new GameMap();
 
 
+    }
+
+    private void changeRadiusCities(float v) {
+        radiusCities = v;
+        mSelectionStrokePaint.setStrokeWidth(mTrackWidthFactor * radiusCities);
+        mCityNamePaint.setTextSize(radiusCities);
     }
 
     public void setSelectedColor(Player.PlayerColor selectedColor) {
@@ -156,8 +163,35 @@ public class MapView extends View {
             backgroundRect = new Rect((int) lt.x, (int) lt.y, (int) rb.x, (int) rb.y);
             bgimage = orgBgImage;
         }
+
+        float d = calcMinimumDistanceBetweenCities();
+        if (d > 0) {
+            changeRadiusCities(0.9f * d / 2);
+        }
+
+
         Log.d("SizeChanged", "Width: " + drawableWidth + " Height: " + drawableHeight + " Radius: " + radiusCities);
 
+    }
+
+    private float calcMinimumDistanceBetweenCities() {
+        if (gameMap == null || gameMap.getCities().isEmpty()) {
+            return -1;
+        }
+
+        float minDistance = Float.MAX_VALUE;
+        for (int i = 0; i < gameMap.getCities().size(); i++) {
+            for (int j = i + 1; j < gameMap.getCities().size(); j++) {
+                PointF center1 = transformCoordinates(gameMap.getCities().get(i).getCoordX(), gameMap.getCities().get(i).getCoordY());
+                PointF center2 = transformCoordinates(gameMap.getCities().get(j).getCoordX(), gameMap.getCities().get(j).getCoordY());
+                float dx = center1.x - center2.x;
+                float dy = center1.y - center2.y;
+                float d = (float) Math.sqrt(dx * dx + dy * dy);
+                if (d < minDistance)
+                    minDistance = d;
+            }
+        }
+        return minDistance;
     }
 
     @Override

@@ -1,6 +1,8 @@
 package com.casalprim.marc.tickettoridecalculator.game;
 
 
+import android.support.annotation.NonNull;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -12,7 +14,7 @@ import java.util.Map;
  */
 
 
-public class Player implements Serializable {
+public class Player implements Serializable, Comparable<Player> {
     public static final int TOTAL_NUMBER_OF_TRAINS = 45;
     public static final Map<Integer, Integer> SCORE_TABLE = scoreMapConstructor();
     private boolean hasLongestPath;
@@ -23,6 +25,7 @@ public class Player implements Serializable {
     private int unusedStations;
     private ArrayList<Edge> longestPath;
     private boolean isNameEdited;
+    private int score;
 
     public Player(PlayerColor color) {
         this.color = color;
@@ -31,6 +34,7 @@ public class Player implements Serializable {
         this.longestPath = new ArrayList<>();
         this.unusedStations = 3;
         this.isNameEdited = false;
+        this.score = 0;
     }
 
     private static Map<Integer, Integer> scoreMapConstructor() {
@@ -135,7 +139,12 @@ public class Player implements Serializable {
     }
 
     public int getScore() {
-        int score = 0;
+        calcScore();
+        return score;
+    }
+
+    public void calcScore() {
+        score = 0;
         HashMap<Integer, Integer> trainsDistribution = trains.getTrainsDistribution();
         for (int trainLength : trainsDistribution.keySet()) {
             score += SCORE_TABLE.get(trainLength) * trainsDistribution.get(trainLength);
@@ -149,8 +158,8 @@ public class Player implements Serializable {
         }
         if (this.hasLongestPath())
             score += 10;
-        return score;
     }
+
 
     public boolean hasLongestPath() {
         return this.hasLongestPath;
@@ -193,6 +202,12 @@ public class Player implements Serializable {
     public String toString() {
         return this.getName();
     }
+
+    @Override
+    public int compareTo(@NonNull Player o) {
+        return o.getScore() - this.getScore();
+    }
+
 
     public enum PlayerColor {BLUE, YELLOW, RED, GREEN, BLACK}
 
